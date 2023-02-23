@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.db import models
@@ -35,3 +36,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
 
     objects = UserManager()
+
+
+class Transaction(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    booking_date = models.DateField()
+    value_date = models.DateField()
+    transaction_amount = models.FloatField()
+    debtor_name = models.TextField()
+    info = models.TextField(default="")
+
+    def __str__(self):
+        return f"{self.debtor_name}, {self.transaction_amount}"
