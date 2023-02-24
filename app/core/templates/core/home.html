@@ -1,8 +1,9 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-
-<div class="fs-1" style="text-align: center; margin-bottom:20px">Welcome, {{user.name}}</div>
+{% if user.is_authenticated %}
+<div class="fs-1" style="text-align: center; margin-bottom:20px">Welcome, {{user.username}}</div>
+{% endif %}
 
 
 <div class="container border shadow border-primary rounded p-4 pt-3 w-50">
