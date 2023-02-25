@@ -5,54 +5,67 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg bg-light">
-        <div class="container-fluid m-1">
-          <a class="navbar-brand" href={% url 'core:home' %}>Home</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <a href={% url 'nordigen:fetch' %}>Fetch</a>
-            </ul>
+
+<body style='padding-top: 70px;'>
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-xxl">
+            <div>
+                <a class="navbar-brand mx-2" href={% url 'core:home' %}>Finances</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
             <span class="navbar-text">
-              {% if user.is_authenticated %}
-              <a class="fs-5 text-decoration-none mx-2" href={% url 'authentication:logout' %}>Logout</a>
-              {% else %}
-              <a class="fs-5 text-decoration-none mx-2" href={% url 'authentication:login' %}>Login</a>
-              {% endif %}
-          
+                {% if user.is_authenticated %}
+                <a class="fs-5 text-decoration-none" href={% url 'authentication:logout' %}>Logout</a>
+                {% else %}
+                <a class="fs-5 text-decoration-none" href={% url 'authentication:login' %}>Login</a>
+                {% endif %}
             </span>
-          </div>
-        </div>
-      </nav>
+            <div class="offcanvas offcanvas-start text-bg-dark" style='width: 200px' tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+                <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Finances</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href={% url 'core:home' %}>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href={% url 'nordigen:fetch' %}>Fetch</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>      
+    </nav>
+
+
+    {% if messages %}
     <div class="container mt-3 w-50">
-        {% if messages %}
         {% for message in messages %}
         {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-            <div class="alert alert-danger" role="alert">
-                {{message}}
-            </div>
-            {% else %}
-            <div class="alert alert-success" role="alert">
-                {{message}}
-            </div>
-        
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% else %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>    
         {% endif %}
-        {% endfor %}
-        {% endif %}
-      </div>
+        {% endfor %} 
+    </div>
+    {% endif %}
+    
 
         {% block content %}
         {% endblock content %}
-
-
-
 </body>
 </html>

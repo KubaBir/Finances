@@ -1,6 +1,7 @@
 import calendar
 import datetime
 import json
+import os
 from os import environ
 
 import requests
@@ -10,47 +11,46 @@ from core.models import MonthlyReport, Transaction
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from app.settings import BASE_DIR
+
 logger = get_task_logger(__name__)
 
 
 @shared_task
 def get_transactions_by_month(id, day, month, year, user_id):
     print(f"Got fetch request for {day}-{month}-{year}")
-    # url = "https://ob.nordigen.com/api/v2/token/new/"
-    # payload = f"secret_id={environ['SECRET_ID']}&secret_key={environ['SECRET_KEY']}"
+    url = "https://ob.nordigen.com/api/v2/token/new/"
+    payload = f"secret_id={environ['SECRET_ID']}&secret_key={environ['SECRET_KEY']}"
 
-    # res = requests.request("POST", url, headers={
-    #     'Content-Type': 'application/x-www-form-urlencoded',
-    #     'Accept': 'application/json'},
-    #     data=payload)
+    res = requests.request("POST", url, headers={
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'},
+        data=payload)
 
-    # token = res.json().get('access', False)
+    token = res.json().get('access', False)
 
-    # date_from = str(year) + '-' + str(month) + '-01'
-    # date_to = str(year) + '-' + str(month) + '-' + \
-    #     str(day)
+    date_from = str(year) + '-' + str(month) + '-01'
+    date_to = str(year) + '-' + str(month) + '-' + \
+        str(day)
 
-    # user_id = "8cf965fa-6ed0-494d-ad5c-cfa5f660ee55"
+    user_id = "8cf965fa-6ed0-494d-ad5c-cfa5f660ee55"
 
-    # url = f"https://ob.nordigen.com/api/v2/accounts/{user_id}/transactions/?date_from={date_from}&date_to={date_to}"
+    url = f"https://ob.nordigen.com/api/v2/accounts/{user_id}/transactions/?date_from={date_from}&date_to={date_to}"
 
-    # res = requests.request("GET", url, headers={
-    #     'Accept': 'application/json',
-    #     'Authorization': f'Bearer {token}'},
-    #     data={})
+    res = requests.request("GET", url, headers={
+        'Accept': 'application/json',
+        'Authorization': f'Bearer {token}'},
+        data={})
 
-    # if res.status_code != 200:
-    #     print("Status code: ", res.status_code, res.text)
-    #     return False
-    # data = res.json()['transactions']['booked']
-    import os
+    if res.status_code != 200:
+        print("Status code: ", res.status_code, res.text)
+        return False
+    data = res.json()['transactions']['booked']
 
-    from app.settings import BASE_DIR
-    file_path = os.path.join(BASE_DIR, 'result.json')
-    f = open(file_path)
-    data = json.load(f)['booked']
-
-    f.close()
+    # file_path = os.path.join(BASE_DIR, 'result.json')
+    # f = open(file_path)
+    # data = json.load(f)['booked']
+    # f.close()
 
     for transaction in data:
         if transaction.get('debtorName'):

@@ -20,7 +20,7 @@ def fetch_data(request):
                 day = today.day
             else:
                 day = calendar.monthrange(year, month)[1]
-            get_transactions_by_month(
+            get_transactions_by_month.delay(
                 request.user.id, day, month, year, request.user.nordigen_user_id)
             return redirect("core:home")
         messages.error(request, "Error")

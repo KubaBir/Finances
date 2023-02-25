@@ -1,0 +1,73 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+
+
+<div style='width: 80%; margin-left:10%; margin-right: 10%'>
+    <div class='text-center fw-bold fs-1 my-3'>{{report.month_year}}</div>
+
+    <div class="row g-5 justify-content-center">
+        <div class="col-10 col-xl-6 ">
+            <div class="p-3 border bg-light">
+                <div class='fw-bold fs-1'>Outgoing</div>
+
+                <div class='overflow-auto' style='height: 500px'>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Debtor</th>
+                                <th scope="col">Value</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>     
+                            {% for transaction in outgoing %}
+                            <tr>
+                                <td>{{transaction.debtor_name}}</td>                            
+                                <td>{{transaction.transaction_amount}}</td>
+                                <td>{{transaction.value_date}}</td>
+                            </tr>
+                            {% endfor %}
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-10 col-xl-6 ">
+            <div class="p-3 border bg-light">
+                <div class='fw-bold fs-1'>Incoming</div>
+
+                <div class='overflow-auto' style='height: 500px'>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Debtor</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Value</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody >     
+                            {% for transaction in incoming %}
+                            <tr >
+                                <td class='text-truncate' style='max-width: 10rem'>{{transaction.debtor_name}}</td>
+                                <td class='text-truncate' style='max-width: 10rem'>{{transaction.info}}</td>
+                                <td>{{transaction.transaction_amount}}</td>
+                                <td>{{transaction.value_date}}</td>
+                            </tr>
+                            {% endfor %}
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

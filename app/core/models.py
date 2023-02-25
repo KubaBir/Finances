@@ -77,7 +77,7 @@ class Transaction(models.Model):
 
     def save(self, *args, **kwargs):
         report, created = MonthlyReport.objects.get_or_create(
-            month_year=self.month_year, user=self.user)
+            month_year=self.month_year, user=self.user, year=self.value_date.year)
         self.report = report
         if self.transaction_amount > 0:
             self.value = 'IN'
@@ -89,6 +89,7 @@ class MonthlyReport(models.Model):
 
     # Format "MM-YYYY"
     month_year = models.CharField(max_length=8)
+    year = models.IntegerField()
 
     total_spendings = models.FloatField(default=0, null=True, blank=True)
     total_income = models.FloatField(default=0, null=True, blank=True)
