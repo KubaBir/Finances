@@ -3,19 +3,10 @@
 {% block banner %}
 {{report.month_year}}
 {% endblock banner %}
+{% block path %}Overview{% endblock path %}
+
 {% block content %}
 
-
-
-<div class="container-fluid py-2">
-
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-0 py-3">
-            <li class="breadcrumb-item "><a class='blue' href={% url 'core:home' %}>Home</a></li>
-            <li class="breadcrumb-item active text-white" aria-current="page">Overview</li>
-        </ol>
-    </nav>
-</div>
 <div class="row g-4 justify-content-center bg-dark mx-3">
     <div class="col-10 col-xl-6 ">
         <div class="p-3 text-light background-secondary">

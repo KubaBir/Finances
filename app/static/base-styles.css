@@ -25,19 +25,25 @@ body {
 }
 
 .sidebar {
-    width: 250px;
+    width: 8%;
     display: block;
     border-right: 1px solid #34373d;
-    /* height: 2000px; */
+    height: 100vh;
+    position: fixed;
 }
 
 .content {
-    width: 100%;
+    margin-left: 8%;
+    /* min-height: 100vh; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .banner {
-    width: 100%;
-    /* margin-bottom: 30px; */
+    width: 92%;
+    position: fixed;
+    z-index: 10;
 }
 
 ul li div {
@@ -54,6 +60,10 @@ a {
 
 .blue {
     color: #51cbee !important;
+}
+
+.bg-blue {
+    background-color: #51cbee !important;
 }
 
 section {
@@ -113,4 +123,27 @@ section {
 
 .footer {
     height: 50px;
+}
+
+.login-container {
+    width: 30%;
+}
+
+.table {
+    --bs-table-border-color: #343a40;
+    border-color: #343a40;
+}
+
+tr:hover {
+    background-color: #40444b;
+}
+
+table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+th {
+    background-color: #2D3035 !important;
 }

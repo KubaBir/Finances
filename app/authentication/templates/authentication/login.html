@@ -1,10 +1,14 @@
 {% extends 'core/base.html' %}
 
+{% block banner %}
+Login
+{% endblock banner %}
+{% block path %}
+Login
+{% endblock path %}
 {% block content %}
 
-
-
-<div class="container border shadow border-primary rounded p-4 pt-3 w-50">
+<div class="container p-4 pt-3 text-white background-secondary login-container">
     <form method='POST'>
         {% csrf_token %}
         {% for field in form %}
@@ -17,15 +21,13 @@
               <div class="alert alert-danger" role="alert"><strong>{{ error }}</strong></div>
         {% endfor %}
         {% endfor %}
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary my-3 w-50">Login</button>
+        <div class='text-center mt-4'>
+            <button type="submit" class="btn bg-blue w-25">Login</button>
         </div>
     </form>
-    <div class='text-center'>
-        <a href={% url 'authentication:register' %} class="btn btn-outline-primary">Register</a>
-    </div>
-    <div class='text-center'>
-        <a href={% url 'core:home' %} class="btn btn-outline-primary">Go back</a>
+    <div class='text-center mt-4'>
+        <div>Don't have an account?</div>
+        <a href={% url 'authentication:register' %} class="">Register</a>
     </div>
 </div>
 

@@ -13,97 +13,114 @@
 </head>
 
 <body>
-    <nav id='navbar' class="navbar navbar-dark fixed-top">
-        <div class="container-fluid mx-2">
+
+<nav id='navbar' class="navbar navbar-dark fixed-top">
+    <div class="container-fluid mx-2">
+        <div>
+            <a class="navbar-brand mx-2 fs-2" href={% url 'core:home' %}>Finances</a>
+        </div>
+
+        <span class="navbar-text">
+            {% if user.is_authenticated %}
+            <a class="fs-4 text-decoration-none" href={% url 'authentication:logout' %}>Logout</a>
+            {% else %}
+            <a class="fs-4 text-decoration-none" href={% url 'authentication:login' %}>Login</a>
+            {% endif %}
+        </span>
+
+        {% comment %} <div class="offcanvas offcanvas-start" data-bs-backdrop="false" style='width: 200px' tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+            <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Finances</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href={% url 'core:home' %}>Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href={% url 'nordigen:fetch' %}>Fetch</a>
+                </li>
+                
+            </ul>
+        </div> {% endcomment %}
+
+    </div>      
+</nav>
+<div class="sidebar background-secondary">
+    <ul class='list-unstyled fs-3 text-center'>
+        <li class="pt-5 mt-5 container">
             <div>
-                <a class="navbar-brand mx-2" href={% url 'core:home' %}>Finances</a>
+                <a href={% url 'core:home' %}>Home</a>     
+
             </div>
-
-            <span class="navbar-text">
-                {% if user.is_authenticated %}
-                <a class="fs-5 text-decoration-none" href={% url 'authentication:logout' %}>Logout</a>
-                {% else %}
-                <a class="fs-5 text-decoration-none" href={% url 'authentication:login' %}>Login</a>
-                {% endif %}
-            </span>
-
-            {% comment %} <div class="offcanvas offcanvas-start" data-bs-backdrop="false" style='width: 200px' tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
-                <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Finances</h5>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </li>
+        <li class="container">
+            <div>
+                <a href={% url 'nordigen:fetch' %}>Fetch</a>  
             </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href={% url 'core:home' %}>Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href={% url 'nordigen:fetch' %}>Fetch</a>
-                    </li>
-                    
-                </ul>
-            </div> {% endcomment %}
+        </li>
+        
+        
+    </ul>
+</div>
+    
+<div class="content">
 
-        </div>      
-    </nav>
+<div>
 
-<div class="d-flex align-items-stretch" style='height:100%'>
-
-    <div class="sidebar background-secondary">
-        <ul class='list-unstyled fs-3 text-center'>
-            <li class="pt-5 mt-5 container">
-                <div>
-                    <a href={% url 'core:home' %}>Home</a>     
-
-                </div>
-            </li>
-            <li class="container">
-                <div>
-                    <a href={% url 'nordigen:fetch' %}>Fetch</a>  
-                </div>
-            </li>
-            
-            
-        </ul>
-    </div>
-
-    <div class='content '>
-
-        <div class="banner background-secondary py-4 px-3">
-            <div style='min-height: 40px;' class="container-fluid">
-                <div class="text-light fs-4 d-flex">
+    
+    <div class="banner background-secondary py-4 px-3">
+        <div style='min-height: 40px;' class="container-fluid text-center text-light fs-4">
+            <div class="row">
+                <div class="col-4 text-start">
                     {% block banner %}
                     {% endblock banner %}
-                    {% if messages %}
-                    <div class="container">
-                        {% for message in messages %}
-                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                        <div style='margin-left: auto; margin-right: auto; margin-bottom: 0' class="alert alert-warning alert-dismissible fade show fs-5 p-1 w-50" role="alert">
-                            {{message}}
-                            <button style='padding: 0.6rem' type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                        {% else %}
-                        <div style='margin-left: auto; margin-right: auto; margin-bottom: 0' class="alert alert-success alert-dismissible fade show fs-5 p-1 w-50" role="alert">
-                            {{message}}
-                            <button style='padding: 0.6rem' type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>    
-                        {% endif %}
-                        {% endfor %} 
-                    </div>
-                    {% endif %}
                 </div>
+                <div class="col-4">
+                    {% if messages %}
+                    {% for message in messages %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div style='margin-bottom: 0' class="mx-auto alert alert-warning alert-dismissible fade show fs-5 p-1 w-50" role="alert">
+                        {{message}}
+                        <button style='padding: 0.6rem' type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% else %}
+                    <div style='margin-bottom: 0' class="mx-auto alert alert-success alert-dismissible fade show fs-5 p-1 w-50" role="alert">
+                        {{message}}
+                        <button style='padding: 0.6rem' type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>    
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </div> 
             </div>
-        </div>
-
-        
-        
-
-            {% block content %}
-            {% endblock content %}
-            <div class="container-fluid background-secondary w-100 mt-5 footer"></div>
-        </div>
-        
+        </div>    
     </div>
+
+    <div style='margin-top: 100px; z-index: 0;'>
+        {% if not latest %}
+        <div class="container-fluid py-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 py-3">
+                    <li class="breadcrumb-item "><a class='blue' href={% url 'core:home' %}>Home</a></li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">
+                        {% block path %}
+                        {% endblock path %}
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        {% endif %}
+        
+        {% block content %}{% endblock content %}
+    </div>
+
+</div>
+{% comment %} <div class="container-fluid background-secondary w-100 mt-5 footer"></div> {% endcomment %}
+</div>
+        
+    
     
 </body>
 </html>
