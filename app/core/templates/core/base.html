@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,16 +9,14 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href={% static 'base-styles.css' %}/>
 </head>
 
-<body style='padding-top: 70px;'>
-    <nav class="navbar navbar-dark bg-dark fixed-top">
-        <div class="container-xxl">
+<body>
+    <nav id='navbar' class="navbar navbar-dark fixed-top">
+        <div class="container-fluid mx-2">
             <div>
                 <a class="navbar-brand mx-2" href={% url 'core:home' %}>Finances</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
             </div>
 
             <span class="navbar-text">
@@ -26,7 +26,8 @@
                 <a class="fs-5 text-decoration-none" href={% url 'authentication:login' %}>Login</a>
                 {% endif %}
             </span>
-            <div class="offcanvas offcanvas-start text-bg-dark" style='width: 200px' tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+
+            {% comment %} <div class="offcanvas offcanvas-start" data-bs-backdrop="false" style='width: 200px' tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
                 <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Finances</h5>
               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -41,31 +42,68 @@
                     </li>
                     
                 </ul>
-            </div>
+            </div> {% endcomment %}
+
         </div>      
     </nav>
 
+<div class="d-flex align-items-stretch" style='height:100%'>
 
-    {% if messages %}
-    <div class="container mt-3 w-50">
-        {% for message in messages %}
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{message}}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% else %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{message}}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>    
-        {% endif %}
-        {% endfor %} 
+    <div class="sidebar background-secondary">
+        <ul class='list-unstyled fs-3 text-center'>
+            <li class="pt-5 mt-5 container">
+                <div>
+                    <a href={% url 'core:home' %}>Home</a>     
+
+                </div>
+            </li>
+            <li class="container">
+                <div>
+                    <a href={% url 'nordigen:fetch' %}>Fetch</a>  
+                </div>
+            </li>
+            
+            
+        </ul>
     </div>
-    {% endif %}
-    
 
-        {% block content %}
-        {% endblock content %}
+    <div class='content '>
+
+        <div class="banner background-secondary py-4 px-3">
+            <div style='min-height: 40px;' class="container-fluid">
+                <div class="text-light fs-4 d-flex">
+                    {% block banner %}
+                    {% endblock banner %}
+                    {% if messages %}
+                    <div class="container">
+                        {% for message in messages %}
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        <div style='margin-left: auto; margin-right: auto; margin-bottom: 0' class="alert alert-warning alert-dismissible fade show fs-5 p-1 w-50" role="alert">
+                            {{message}}
+                            <button style='padding: 0.6rem' type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% else %}
+                        <div style='margin-left: auto; margin-right: auto; margin-bottom: 0' class="alert alert-success alert-dismissible fade show fs-5 p-1 w-50" role="alert">
+                            {{message}}
+                            <button style='padding: 0.6rem' type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>    
+                        {% endif %}
+                        {% endfor %} 
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        
+        
+
+            {% block content %}
+            {% endblock content %}
+            <div class="container-fluid background-secondary w-100 mt-5 footer"></div>
+        </div>
+        
+    </div>
+    
 </body>
 </html>

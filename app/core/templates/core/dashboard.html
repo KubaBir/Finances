@@ -1,12 +1,124 @@
 {% extends 'core/base.html' %}
 
+{% block banner %}
+<div>
+    Dashboard
+</div>
+{% endblock banner %}
+
 {% block content %}
-<div class="container-md px-4 text-center border border-primary">
+<section>
+    <div class="container-fluid">
+        <div class="row g-5 px-5">
+            <div class="col-lg-6 col-xl-4">
+                <div class="background-secondary text-light fs-4 card h-100">
+                    <form action={% url 'nordigen:fetch' %} method='POST'>
+                        <div class='card-header d-flex justify-content-between'>
+                            <div>Fetch data by month:</div>
+                            <button style='color: #51cbee' type="submit" class="text-button fw-bold text-end w-25">&#8250;</button>
+                        </div>
+                        <div class="card-body">
+
+                                {% csrf_token %}
+                                <div class="">
+                                    <label for="id_month">Month:</label>
+                                    <input type="text" name="month" class="form-control fs-5" placeholder="#" value="2" required="" id="id_month">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_year">Year:</label> 
+                                    <input type="text" name="year" class="form-control fs-5" placeholder="#" value="2023" required="" id="id_year">
+                                </div>
+
+                            </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-4">
+                <div class="background-secondary text-light fs-4 card h-100">
+                    <div class='card-header d-flex justify-content-between'>
+                        <div>This month:</div>
+                        <a class='fw-bold text-end w-25' style='color: #51cbee' href="/overview/{{latest.id}}">&#8250;</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>Number of transactions:</div>
+                            <div style='color: #51cbee' class='fs-1'>{{latest.number_of_transactions}}</div>
+                        </div>
+                        <hr>
+                        <div>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div>Spendings:</div>
+                                <div style='color: #51cbee' class='fs-3'>{{latest.total_spendings|floatformat:1 }}</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div>Income:</div>
+                                <div style='color: #51cbee' class='fs-3'>{{latest.total_income|floatformat:1 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-4">
+                <div class="background-secondary text-light fs-4 card h-100">
+                    <div class='card-header d-flex justify-content-between'>
+                        <div>This month:</div>
+                        <a class='fw-bold text-end w-25' style='color: #51cbee' href="/overview/{{latest.id}}">&#8250;</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>Number of transactions:</div>
+                            <div style='color: #51cbee' class='fs-1'>{{latest.number_of_transactions}}</div>
+                        </div>
+                        <hr>
+                        <div>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div>Spendings:</div>
+                                <div style='color: #51cbee' class='fs-3'>{{latest.total_spendings|floatformat:1 }}</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div>Income:</div>
+                                <div style='color: #51cbee' class='fs-3'>{{latest.total_income|floatformat:1 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-4">
+                <div class="background-secondary text-light fs-4 card h-100">
+                    <div class='card-header d-flex justify-content-between'>
+                        <div>This month:</div>
+                        <a class='fw-bold text-end w-25' style='color: #51cbee' href="/overview/{{latest.id}}">&#8250;</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>Number of transactions:</div>
+                            <div style='color: #51cbee' class='fs-1'>{{latest.number_of_transactions}}</div>
+                        </div>
+                        <hr>
+                        <div>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div>Spendings:</div>
+                                <div style='color: #51cbee' class='fs-3'>{{latest.total_spendings|floatformat:1 }}</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div>Income:</div>
+                                <div style='color: #51cbee' class='fs-3'>{{latest.total_income|floatformat:1 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container-md px-4 text-center">
+
     <div class="row g-3">
         {% for report in report_list %}
         <div class="col-md-6 col-lg-4">
-            <div class="p-3 border bg-light" style='height: 100px'>
-                <div class='fs-4 fw-bold'>
+            <div class="p-3 background-secondary" style='height: 100px'>
+                <div class='fs-4 fw-bold text-light'>
                     {{report.month_year}}
                 </div>
                 <div>

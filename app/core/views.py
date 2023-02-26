@@ -16,7 +16,8 @@ def main_page(request):
 def dashboard(request):
     report_list = MonthlyReport.objects.filter(
         user=request.user).order_by('-year')
-    return render(request, 'core/dashboard.html', context={'report_list': report_list})
+    latest = report_list[0]
+    return render(request, 'core/dashboard.html', context={'report_list': report_list, 'latest': latest})
 
 
 @login_required()

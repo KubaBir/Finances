@@ -79,9 +79,35 @@ class Transaction(models.Model):
         report, created = MonthlyReport.objects.get_or_create(
             month_year=self.month_year, user=self.user, year=self.value_date.year)
         self.report = report
+
+        self.set_category()
+
         if self.transaction_amount > 0:
             self.value = 'IN'
         super().save(*args, **kwargs)
+
+    def set_category(self):
+        if self.transaction_amount > 0:
+            return
+        category_list = {
+            'Groceries': [
+                'ZABKA', 'ZAPPKA', 'CARREFOUR', 'LIDL', 'VEMAT', 'ORLEN', 'CHATA', 'KIOSK'
+            ],
+            'Food': [
+                'MC DON', 'KFC', 'MCDONALDS', 'BAR', 'EATS', 'PYSZNE', 'GLODNY', 'PIZZA', 'SALAD', 'KIM CHI',
+                'MAKARONSKI', 'STODOLA',
+            ],
+            'Travel': [
+                'JAKDOJADE', 'BILKOM', 'LIM', 'DOTT', 'TRIP', 'BOLT', 'INTERCITY', 'URBANCARD'
+            ],
+            'Clothing': [
+                'ZARA', 'ASOS', 'ZALANDO'
+            ]}
+        for category, names in category_list.items():
+            for name in names:
+                if name in self.debtor_name:
+                    self.category = category
+                    return
 
 
 class MonthlyReport(models.Model):
