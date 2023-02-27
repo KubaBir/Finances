@@ -34,6 +34,7 @@ body {
 
 .content {
     margin-left: 8%;
+    width: 92%;
     /* min-height: 100vh; */
     display: flex;
     flex-direction: column;
@@ -60,6 +61,22 @@ a {
 
 .blue {
     color: #51cbee !important;
+}
+
+.green {
+    color: #89e200;
+}
+
+.bg-green {
+    background-color: #89e200;
+}
+
+.orange {
+    color: #ff8547;
+}
+
+.bg-orange {
+    background-color: #ff8547;
 }
 
 .bg-blue {
@@ -146,4 +163,9 @@ table thead th {
 
 th {
     background-color: #2D3035 !important;
+}
+
+.progress-bar,
+.progress {
+    --bs-progress-bg: #40444b;
 }

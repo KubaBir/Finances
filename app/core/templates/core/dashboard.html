@@ -1,4 +1,6 @@
+
 {% extends 'core/base.html' %}
+{% load abs %}
 
 {% block banner %}
 Dashboard
@@ -6,8 +8,8 @@ Dashboard
 {% block path %}Dashboard{% endblock path %}
 
 {% block content %}
-<section>
-    <div class="container-fluid">
+<section id='quick-action'>
+    <div class="">
         <div class="row g-5 px-5">
             <div class="col-lg-6 col-xl-4">
                 <div class="background-secondary text-light fs-4 card h-100">
@@ -47,7 +49,7 @@ Dashboard
                         <div>
                             <div class="d-flex justify-content-between align-items-end">
                                 <div>Spendings:</div>
-                                <div style='color: #51cbee' class='fs-3'>{{latest.total_spendings|floatformat:1 }}</div>
+                                <div style='color: #51cbee' class='fs-3'>{{latest.total_spendings|floatformat:1|abs }}</div>
                             </div>
                             <div class="d-flex justify-content-between align-items-end">
                                 <div>Income:</div>
@@ -111,14 +113,17 @@ Dashboard
     </div>
 </section>
 
-<div class="container-md px-4 text-center">
-
+<div class="container-fluid px-4 mx-5">
+    <div class='fs-4 fw-bold text-light'>
+        History
+    </div>
     <div class="row g-3">
         {% for report in report_list %}
         <div class="col-md-6 col-lg-4">
             <div class="p-3 background-secondary" style='height: 100px'>
                 <div class='fs-4 fw-bold text-light'>
-                    {{report.month_year}}
+                    {{ report.date|date:"M" }}
+                    {{report.date.year}}
                 </div>
                 <div>
                     <a href="/overview/{{report.id}}">link</a>

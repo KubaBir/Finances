@@ -66,7 +66,7 @@ class Transaction(models.Model):
     value = models.CharField(choices=VALUE_CHOICES, default='SP', max_length=2)
 
     report = models.ForeignKey(
-        'MonthlyReport', on_delete=models.SET_NULL, blank=True, null=True)
+        'MonthlyReport', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return f"{self.debtor_name}, {self.transaction_amount}"
@@ -76,13 +76,16 @@ class Transaction(models.Model):
         return f"{self.value_date.month:02d}" + '-' + str(self.value_date.year)
 
     def save(self, *args, **kwargs):
+        date = datetime.date(self.value_date.year, self.value_date.month, 1)
         report, created = MonthlyReport.objects.get_or_create(
-            month_year=self.month_year, user=self.user, year=self.value_date.year)
+            user=self.user,
+            date=date,
+        )
         self.report = report
 
         self.set_category()
 
-        if self.transaction_amount > 0:
+        if self.transaction_amount > 0 and not self.value:
             self.value = 'IN'
         super().save(*args, **kwargs)
 
@@ -112,14 +115,18 @@ class Transaction(models.Model):
 
 class MonthlyReport(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    # Format "MM-YYYY"
-    month_year = models.CharField(max_length=8)
-    year = models.IntegerField()
+    # Day set to always be 01
+    date = models.DateField()
 
     total_spendings = models.FloatField(default=0, null=True, blank=True)
     total_income = models.FloatField(default=0, null=True, blank=True)
     number_of_transactions = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.month_year}"
+        return f"{self.date.strftime('%B %Y')}"
+
+    @property
+    def previous(self):
+        previous = MonthlyReport.objects.filter(
+            date__lt=self.date).order_by('date').first()
+        return previous
