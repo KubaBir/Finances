@@ -32,7 +32,8 @@
                     <div class='blue fs-2'>{{report.number_of_transactions }}</div>
                 </div>
                 <div class="progress my-1" style="height: 3px">
-                    <div class="progress-bar bg-blue blue" role="progressbar" style="width: {{ transactions_bar }}%"></div>
+                    <div class="progress-bar bg-blue blue" role="progressbar" style="width: {{ transactions_bar }}%">
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,11 +55,11 @@
 
 
 </div>
-<div class="row g-4 bg-dark m-3 mx-5">
-    <div class="col-10 col-xxl-6 ">
-        <div class="p-3 text-light background-secondary">
+<div class="row g-4 bg-dark m-3 mx-5 align-items-stretch">
+    <div class="col-10 col-xxl-6">
+        <div class="p-3 text-light background-secondary h-100">
             <div class='fw-bold fs-1'>Outgoing</div>
-            <div class='overflow-auto' style='height: 500px'>
+            <div class='overflow-auto' style='height: 600px'>
                 <table class="table text-white">
                     <thead>
                         <tr>
@@ -67,15 +68,15 @@
                             <th scope="col">Date</th>
                         </tr>
                     </thead>
-                    <tbody>     
+                    <tbody>
                         {% for transaction in outgoing %}
                         <tr>
-                            <td>{{transaction.debtor_name}}</td>                            
+                            <td>{{transaction.debtor_name}}</td>
                             <td>{{transaction.transaction_amount}}</td>
-                            <td>{{transaction.value_date}}</td>                            
+                            <td>{{transaction.value_date}}</td>
                         </tr>
                         {% endfor %}
-                        
+
                     </tbody>
                 </table>
             </div>
@@ -84,8 +85,8 @@
     </div>
     <div class="col-10 col-xl-6 ">
         <div class="p-3 text-light background-secondary">
-            <div class='fw-bold fs-1'>Incoming</div>
-            <div class='overflow-auto' style='height: 500px'>
+            <div class='fw-bold fs-1'>Income</div>
+            <div class='overflow-auto' style='height: 250px'>
                 <table class="table text-white">
                     <thead>
                         <tr>
@@ -95,9 +96,9 @@
                             <th scope="col">Date</th>
                         </tr>
                     </thead>
-                    <tbody >     
-                        {% for transaction in incoming %}
-                        <tr >
+                    <tbody>
+                        {% for transaction in income %}
+                        <tr>
                             <td class='text-truncate' style='max-width: 10rem'>{{transaction.debtor_name}}</td>
                             <td class='text-truncate' style='max-width: 10rem'>{{transaction.info}}</td>
                             <td>{{transaction.transaction_amount}}</td>
@@ -106,16 +107,50 @@
                                 <form action="/change_category/{{transaction.id}}" method='POST'>
                                     {% csrf_token %}
                                     <input type="hidden" name="next" value="{{ request.path }}">
-                                    <button style='color: #51cbee' type="submit" class="text-button fw-bold text-end w-25">&#8250;</button>
+                                    <button style='color: #51cbee' type="submit"
+                                        class="text-button fw-bold text-end w-25">&#8250;</button>
                                 </form>
                             </td>
                         </tr>
                         {% endfor %}
-                        
+
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="p-3 mt-4 text-light background-secondary">
+            <div class='fw-bold fs-1'>Returns</div>
+            <div class='overflow-auto' style='height: 250px'>
+                <table class="table text-white">
+                    <thead>
+                        <tr>
+                            <th scope="col">Debtor</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Value</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in returns %}
+                        <tr>
+                            <td class='text-truncate' style='max-width: 10rem'>{{transaction.debtor_name}}</td>
+                            <td class='text-truncate' style='max-width: 10rem'>{{transaction.info}}</td>
+                            <td>{{transaction.transaction_amount}}</td>
+                            <td>{{transaction.value_date}}</td>
+                            <td>
+                                <form action="/change_category/{{transaction.id}}" method='POST'>
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.path }}">
+                                    <button style='color: #51cbee' type="submit"
+                                        class="text-button fw-bold text-end w-25">&#8250;</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
 
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

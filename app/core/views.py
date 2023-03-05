@@ -94,14 +94,17 @@ def overview(request, id=None):
         income_bar = 100
         transactions_bar = 100
 
-    incoming = Transaction.objects.filter(
-        transaction_amount__gte=0, report=report).order_by('-value_date')
     outgoing = Transaction.objects.filter(
-        transaction_amount__lt=0, report=report).order_by('-value_date')
+        value='SP', report=report).order_by('-value_date')
+    income = Transaction.objects.filter(
+        value='IN', report=report).order_by('-value_date')
+    returns = Transaction.objects.filter(
+        value='RE', report=report).order_by('-value_date')
 
     context = {
+        'income': income,
+        'returns': returns,
         'outgoing': outgoing,
-        'incoming': incoming,
         'report': report,
         'spendings_bar': spendings_bar,
         'income_bar': income_bar,
@@ -134,7 +137,7 @@ def update_report(id):
         report=report, value='RE').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
     spent = Transaction.objects.filter(
         report=report, value='SP').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
-    report.total_spendings = returned - spent
+    report.total_spendings = -returned - spent
 
     report.total_income = Transaction.objects.filter(
         report=report, value='IN').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
