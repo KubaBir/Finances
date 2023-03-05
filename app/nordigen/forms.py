@@ -6,14 +6,16 @@ from django.core.exceptions import ValidationError
 
 class FetchForm(forms.Form):
     today = datetime.date.today()
-    month = forms.IntegerField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '#', 'value': today.month}))
+    month = forms.IntegerField(required=False,
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '#', 'value': today.month}))
     year = forms.IntegerField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': '#', 'value': today.year}))
 
     def clean_month(self):
         today = datetime.date.today()
-        month = self.cleaned_data['month']
+        month = self.cleaned_data.get('month', None)
+        if month is None:
+            return month
         year = self.cleaned_data.get('year')
         if month > 12 or month <= 0 or (year == today.year and month > today.month):
             raise ValidationError("The month is not valid!")

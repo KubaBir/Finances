@@ -84,9 +84,8 @@ class Transaction(models.Model):
         self.report = report
 
         self.set_category()
+        self.set_value()
 
-        if self.transaction_amount > 0 and not self.value:
-            self.value = 'IN'
         super().save(*args, **kwargs)
 
     def set_category(self):
@@ -111,6 +110,10 @@ class Transaction(models.Model):
                 if name in self.debtor_name:
                     self.category = category
                     return
+
+    def set_value(self):
+        if self.transaction_amount > 0 and self.value not in ['IN', 'RE']:
+            self.value = 'IN'
 
 
 class MonthlyReport(models.Model):

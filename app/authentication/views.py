@@ -14,7 +14,7 @@ def register_user(request):
             user = form.save()
             login(request, user)
             messages.success(request, 'Registration successful.')
-            return redirect("core/home")
+            return redirect("core:home")
         messages.error(request, "Error while registering.")
     form = RegisterUserForm()
     return render(request, 'authentication/register.html', context={'form': form})
@@ -29,7 +29,7 @@ def login_user(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.info(request, "Logged in succesfuly.")
+                messages.info(request, "Logged in successfully.")
                 return redirect('core:home')
         messages.error(request, 'Invalid credentials')
     form = LoginUserForm()

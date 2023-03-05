@@ -17,7 +17,7 @@ logger = get_task_logger(__name__)
 
 
 @shared_task
-def get_transactions_by_month(id, day, month, year, user_id):
+def get_transactions(id, day, month, year, user_id, by_month=True):
     print(f"Got fetch request for {day}-{month}-{year}")
     url = "https://ob.nordigen.com/api/v2/token/new/"
     payload = f"secret_id={environ['SECRET_ID']}&secret_key={environ['SECRET_KEY']}"
@@ -29,9 +29,16 @@ def get_transactions_by_month(id, day, month, year, user_id):
 
     token = res.json().get('access', False)
 
-    date_from = str(year) + '-' + str(month) + '-01'
-    date_to = str(year) + '-' + str(month) + '-' + \
-        str(day)
+    if by_month:
+        date_from = str(year) + '-' + str(month) + '-01'
+        date_to = str(year) + '-' + str(month) + '-' + \
+            str(day)
+    else:
+        date_from = str(year) + '-01-01'
+        date_to = str(year) + '-' + str(month) + '-' + str(day)
+
+    print(date_from)
+    print(date_to)
 
     user_id = "8cf965fa-6ed0-494d-ad5c-cfa5f660ee55"
 
@@ -45,6 +52,7 @@ def get_transactions_by_month(id, day, month, year, user_id):
     if res.status_code != 200:
         print("Status code: ", res.status_code, res.text)
         return False
+
     data = res.json()['transactions']['booked']
 
     # file_path = os.path.join(BASE_DIR, 'result.json')
@@ -85,12 +93,12 @@ def get_transactions_by_month(id, day, month, year, user_id):
             report=report, value='RE').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
         spent = Transaction.objects.filter(
             report=report, value='SP').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
-        report.total_spendings = returned - spent
+        report.total_spendings = -returned - spent
 
         report.total_income = Transaction.objects.filter(
             report=report, value='IN').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
         report.number_of_transactions = Transaction.objects.filter(
             report=report).aggregate(models.Count('transaction_amount'))['transaction_amount__count'] or 0
-    report.save()
+        report.save()
 
     return True

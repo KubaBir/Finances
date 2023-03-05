@@ -9,7 +9,7 @@ from django.db import models
 from django.shortcuts import HttpResponse, redirect, render
 
 from app.settings import BASE_DIR
-from app.tasks import get_transactions_by_month
+from app.tasks import get_transactions
 
 from .models import MonthlyReport, Transaction
 
