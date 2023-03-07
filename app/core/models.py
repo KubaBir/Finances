@@ -126,10 +126,10 @@ class MonthlyReport(models.Model):
     number_of_transactions = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.date.strftime('%B %Y')}"
+        return f"{self.user} - {self.date.strftime('%B %Y')}"
 
     @property
     def previous(self):
         previous = MonthlyReport.objects.filter(
-            date__lt=self.date).order_by('date').first()
+            date__lt=self.date, user=self.user).order_by('date').first()
         return previous

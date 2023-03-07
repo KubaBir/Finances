@@ -2,7 +2,7 @@
 {% load abs %}
 
 {% block banner %}
-{{ report.date|date:"M" }}
+{{ report.date|date:"F" }}
 {{report.date.year}}
 {% endblock banner %}
 {% block path %}Overview{% endblock path %}
@@ -55,7 +55,7 @@
 
 
 </div>
-<div class="row g-4 bg-dark m-3 mx-5 align-items-stretch">
+<div class="row g-4 bg-dark m-3 mx-5 align-items-stretch justify-content-center">
     <div class="col-10 col-xxl-6">
         <div class="p-3 text-light background-secondary h-100">
             <div class='fw-bold fs-1'>Outgoing</div>
@@ -83,7 +83,7 @@
 
         </div>
     </div>
-    <div class="col-10 col-xl-6 ">
+    <div class="col-6">
         <div class="p-3 text-light background-secondary">
             <div class='fw-bold fs-1'>Income</div>
             <div class='overflow-auto' style='height: 250px'>
