@@ -47,7 +47,8 @@ class Transaction(models.Model):
     value_date = models.DateField()
     transaction_amount = models.FloatField()
     debtor_name = models.TextField()
-    info = models.TextField(default="")
+    info = models.TextField(default="", blank=True)
+    ignore = models.BooleanField(default=False)
 
     CATEGORY_CHOICES = [
         ('Groceries', 'Groceries'),

@@ -31,100 +31,58 @@
                 <a class="fs-4 text-decoration-none" href={% url 'authentication:login' %}>Login</a>
                 {% endif %}
             </span>
-
-            {% comment %} <div class="offcanvas offcanvas-start" data-bs-backdrop="false" style='width: 200px'
-                tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Finances</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href={% url 'core:home' %}>Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href={% url 'nordigen:fetch' %}>Fetch</a>
-                        </li>
-
-                    </ul>
-                </div> {% endcomment %}
-
-            </div>
+        </div>
     </nav>
-    <!-- <div class="sidebar background-secondary">
-        <ul class='list-unstyled fs-3 text-center'>
-            <li class="pt-5 mt-5 container">
-                <div>
-                    <a href={% url 'core:home' %}>Home</a>
-
+    {% comment %} Banner {% endcomment %}
+    <div class="banner background-secondary py-3 px-3">
+        <div class="container-fluid text-center text-light fs-4">
+            <div class="row">
+                <div class="col-4 text-start text-nowrap">
+                    {% block banner %}
+                    {% endblock banner %}
                 </div>
-            </li>
-            <li class="container">
-                <div>
-                    <a href={% url 'nordigen:fetch' %}>Fetch</a>
-                </div>
-            </li>
-
-
-        </ul>
-    </div> -->
-
-    <div class="content">
-
-        {% comment %} Banner {% endcomment %}
-        <div class="banner background-secondary py-3 px-3">
-            <div class="container-fluid text-center text-light fs-4">
-                <div class="row">
-                    <div class="col-4 text-start text-nowrap">
-                        {% block banner %}
-                        {% endblock banner %}
+                {% if messages %}
+                <div class="col-4">
+                    {% for message in messages %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div style='margin-bottom: 0'
+                        class="mx-auto alert alert-warning alert-dismissible fade show fs-5 p-1" role="alert">
+                        {{message}}
+                        <button style='padding: 0.6rem' type="button" class="btn-close" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
                     </div>
-                    {% if messages %}
-                    <div class="col-4">
-                        {% for message in messages %}
-                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                        <div style='margin-bottom: 0'
-                            class="mx-auto alert alert-warning alert-dismissible fade show fs-5 p-1" role="alert">
-                            {{message}}
-                            <button style='padding: 0.6rem' type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                        </div>
-                        {% else %}
-                        <div style='margin-bottom: 0'
-                            class="mx-auto alert alert-success alert-dismissible fade show fs-5 p-1" role="alert">
-                            {{message}}
-                            <button style='padding: 0.6rem' type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
+                    {% else %}
+                    <div style='margin-bottom: 0'
+                        class="mx-auto alert alert-success alert-dismissible fade show fs-5 p-1" role="alert">
+                        {{message}}
+                        <button style='padding: 0.6rem' type="button" class="btn-close" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
                     </div>
                     {% endif %}
+                    {% endfor %}
                 </div>
+                {% endif %}
             </div>
         </div>
+    </div>
 
+    <div class="content">
         {% comment %} Breadcrumb {% endcomment %}
-        <div style='margin-top: 60px; z-index: 0;'>
-            {% if not latest %}
-            <div class="container-fluid py-2">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0 py-3">
-                        <li class="breadcrumb-item "><a class='blue' href={% url 'core:home' %}>Home</a></li>
-                        <li class="breadcrumb-item active text-white" aria-current="page">
-                            {% block path %}
-                            {% endblock path %}
-                        </li>
-                    </ol>
-                </nav>
-            </div>
-            {% endif %}
-
-            {% block content %}{% endblock content %}
+        {% if not latest %}
+        <div class="container-fluid py-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 py-3">
+                    <li class="breadcrumb-item "><a class='blue' href={% url 'core:home' %}>Home</a></li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">
+                        {% block path %}
+                        {% endblock path %}
+                    </li>
+                </ol>
+            </nav>
         </div>
+        {% endif %}
 
+        {% block content %}{% endblock content %}
     </div>
 
 

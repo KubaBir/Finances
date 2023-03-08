@@ -95,11 +95,18 @@ def overview(request, id=None):
         transactions_bar = 100
 
     outgoing = Transaction.objects.filter(
-        value='SP', report=report).order_by('-value_date')
+        value='SP', report=report).order_by('-value_date', 'debtor_name')
     income = Transaction.objects.filter(
-        value='IN', report=report).order_by('-value_date')
+        value='IN', report=report).order_by('-value_date', 'debtor_name')
     returns = Transaction.objects.filter(
-        value='RE', report=report).order_by('-value_date')
+        value='RE', report=report).order_by('-value_date', 'debtor_name')
+
+    report_spendings = round(-Transaction.objects.filter(
+        models.Q(value='SP') | models.Q(value='RE'),
+        report=report,
+        ignore=False,
+    ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2)
+    print(report_spendings)
 
     context = {
         'income': income,
@@ -109,6 +116,7 @@ def overview(request, id=None):
         'spendings_bar': spendings_bar,
         'income_bar': income_bar,
         'transactions_bar': transactions_bar,
+        'report_spendings': report_spendings,
     }
 
     return render(request, 'core/overview.html', context=context)
@@ -133,14 +141,32 @@ def update_report(id):
     transaction = Transaction.objects.get(id=id)
     report = transaction.report
 
-    returned = Transaction.objects.filter(
-        report=report, value='RE').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
-    spent = Transaction.objects.filter(
-        report=report, value='SP').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
-    report.total_spendings = -returned - spent
+    report.total_spendings = round(-Transaction.objects.filter(
+        models.Q(value='SP') | models.Q(value='RE'),
+        report=report
+    ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'], 2)
 
     report.total_income = Transaction.objects.filter(
-        report=report, value='IN').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
+        report=report,
+        value='IN'
+    ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
+
     report.number_of_transactions = Transaction.objects.filter(
-        report=report).aggregate(models.Count('transaction_amount'))['transaction_amount__count'] or 0
+        report=report
+    ).aggregate(models.Count('transaction_amount'))['transaction_amount__count'] or 0
+
     report.save()
+
+
+def ignore_transaciton(request, id=None):
+    if request.method == 'POST':
+        next = request.POST.get('next', '/')
+        transaction = Transaction.objects.get(id=id)
+        if transaction.ignore == False:
+            transaction.ignore = True
+        else:
+            transaction.ignore = False
+        transaction.save()
+        # messages.success(request, 'Changed category.')
+        return redirect(next)
+    return redirect('core:home')

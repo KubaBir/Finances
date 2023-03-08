@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<div class="row gx-5 bg-dark m-3 justify-content-center">
+<div id='overview' class="row gx-5 bg-dark m-3 justify-content-center">
     <div class="col-lg-6 col-xl-3">
         <div class="background-secondary text-light fs-4 card">
 
@@ -51,29 +51,37 @@
             </div>
         </div>
     </div>
-
-
-
 </div>
-<div class="row g-4 bg-dark m-3 mx-5 align-items-stretch justify-content-center">
+
+
+<div id='transaction-list' class="row g-4 bg-dark m-3 mx-5 align-items-stretch justify-content-center">
     <div class="col-10 col-xxl-6">
         <div class="p-3 text-light background-secondary h-100">
             <div class='fw-bold fs-1'>Outgoing</div>
-            <div class='overflow-auto' style='height: 600px'>
+            <div id='outgoing' class='overflow-auto' style='height: 600px'>
                 <table class="table text-white">
                     <thead>
                         <tr>
                             <th scope="col">Debtor</th>
                             <th scope="col">Value</th>
                             <th scope="col">Date</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for transaction in outgoing %}
-                        <tr>
+                        <tr {% if transaction.ignore %}class='ignore'{% endif %}>
                             <td>{{transaction.debtor_name}}</td>
                             <td>{{transaction.transaction_amount}}</td>
                             <td>{{transaction.value_date}}</td>
+                            <td>
+                                <form action="/ignore_transaction/{{transaction.id}}" method='POST'>
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.path }}">
+                                    <button style='' type="submit"
+                                        class="text-button fw-bold text-end text-light w-75">&#9587;</button>
+                                </form>
+                            </td>
                         </tr>
                         {% endfor %}
 
@@ -94,6 +102,7 @@
                             <th scope="col">Description</th>
                             <th scope="col">Value</th>
                             <th scope="col">Date</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -128,6 +137,7 @@
                             <th scope="col">Description</th>
                             <th scope="col">Value</th>
                             <th scope="col">Date</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -155,5 +165,29 @@
     </div>
 
 </div>
+
+<section id='report' class='bg-dark mx-5'>
+    <div class='fs-1 fw-bold text-light'>
+        <div>
+            Report
+        </div>
+        <div>
+            {{report_spendings}}
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        var el = document.getElementById("outgoing");
+        scrollpos = localStorage.getItem('scrollpos');
+        if (scrollpos) el.scrollTop=scrollpos;   
+    });
+
+    window.onbeforeunload = function(e) {
+        var el = document.getElementById("outgoing");
+        localStorage.setItem('scrollpos', el.scrollTop);
+    };
+</script>
 
 {% endblock content %}
