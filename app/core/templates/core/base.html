@@ -13,6 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href={% static 'base-styles.css' %} />
 </head>
 
@@ -66,7 +67,7 @@
         </div>
     </div>
 
-    <div class="content">
+    <div id='content' class="content">
         {% comment %} Breadcrumb {% endcomment %}
         {% if not latest %}
         <div class="container-fluid py-2">
@@ -88,5 +89,24 @@
 
 
 </body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        var content = document.getElementById("content");
+        scrollpos_content = localStorage.getItem('scrollpos_content');
+        if (scrollpos_content) content.scrollTop=scrollpos_content;   
+
+        var el = document.getElementById("outgoing");
+        scrollpos_el = localStorage.getItem('scrollpos');
+        if (scrollpos_el) el.scrollTop=scrollpos_el;   
+    });
+
+    window.onbeforeunload = function(e) {
+        var content = document.getElementById("content");
+        var el = document.getElementById("outgoing");
+        localStorage.setItem('scrollpos_content', content.scrollTop);
+        localStorage.setItem('scrollpos', el.scrollTop);
+    };
+</script>
 
 </html>

@@ -101,12 +101,44 @@ def overview(request, id=None):
     returns = Transaction.objects.filter(
         value='RE', report=report).order_by('-value_date', 'debtor_name')
 
-    report_spendings = round(-Transaction.objects.filter(
+    report_spendings = -round(Transaction.objects.filter(
         models.Q(value='SP') | models.Q(value='RE'),
         report=report,
         ignore=False,
     ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2)
-    print(report_spendings)
+
+    categories = {
+        'groceries': -round(Transaction.objects.filter(
+            value='SP',
+            category='Groceries',
+            report=report
+        ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
+        'food': -round(Transaction.objects.filter(
+            value='SP',
+            category='Food',
+            report=report
+        ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
+        'groceries': -round(Transaction.objects.filter(
+            value='SP',
+            category='Groceries',
+            report=report
+        ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
+        'travel': -round(Transaction.objects.filter(
+            value='SP',
+            category='Travel',
+            report=report
+        ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
+        'clothing': -round(Transaction.objects.filter(
+            value='SP',
+            category='Clothing',
+            report=report
+        ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
+        'other': -round(Transaction.objects.filter(
+            value='SP',
+            category='Other',
+            report=report
+        ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
+    }
 
     context = {
         'income': income,
@@ -117,6 +149,7 @@ def overview(request, id=None):
         'income_bar': income_bar,
         'transactions_bar': transactions_bar,
         'report_spendings': report_spendings,
+        'categories': categories
     }
 
     return render(request, 'core/overview.html', context=context)
