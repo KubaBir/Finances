@@ -18,8 +18,8 @@ body {
     border-bottom: 1px solid var(--border-color);
 }
 
-.background-secondary {
-    background-color: var(--secondary-bg-color);
+.bg-secondary {
+    background-color: var(--secondary-bg-color) !important;
 }
 
 .text-light {

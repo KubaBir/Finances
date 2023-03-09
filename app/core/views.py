@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+from calendar import monthrange
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -140,6 +141,20 @@ def overview(request, id=None):
         ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
     }
 
+    dates = [report.date + datetime.timedelta(days=x) for x in range(
+        monthrange(report.date.year, report.date.month)[1])]
+    daily_spendings = []
+    for i, date in enumerate(dates):
+        daily_spendings.append(-round(Transaction.objects.filter(
+            user=request.user,
+            value='SP',
+            report=report,
+            value_date=date
+        ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2))
+    timeline = []
+    for i in range(0, len(daily_spendings), 3):
+        timeline.append(sum(daily_spendings[i:i+3]))
+
     context = {
         'income': income,
         'returns': returns,
@@ -149,7 +164,8 @@ def overview(request, id=None):
         'income_bar': income_bar,
         'transactions_bar': transactions_bar,
         'report_spendings': report_spendings,
-        'categories': categories
+        'categories': categories,
+        'timeline': timeline
     }
 
     return render(request, 'core/overview.html', context=context)
