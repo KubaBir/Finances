@@ -71,7 +71,7 @@
                     </thead>
                     <tbody>
                         {% for transaction in outgoing %}
-                        <tr {% if transaction.ignore %}class='ignore'{% endif %}>
+                        <tr {% if transaction.ignore %}class='ignore' {% endif %}>
                             <td>{{transaction.debtor_name}}</td>
                             <td>{{transaction.transaction_amount}}</td>
                             <td>{{transaction.value_date}}</td>
@@ -79,7 +79,7 @@
                                 <form action="/ignore_transaction/{{transaction.id}}" method='POST'>
                                     {% csrf_token %}
                                     <input type="hidden" name="next" value="{{ request.path }}">
-                                    <button style='' type="submit"
+                                    <button type="submit"
                                         class="text-button fw-bold text-end text-light w-75">&#9587;</button>
                                 </form>
                             </td>
@@ -179,30 +179,30 @@
                 new Chart(cat, {
                     type: 'pie',
                     data: {
-                        labels: ['Groceries', 'Food', 'Travel', 'Clothing','Other'],
+                        labels: ['Groceries', 'Food', 'Travel', 'Clothing', 'Other'],
                         datasets: [{
-                                data: [{% for value in categories.values %}{{value}},{% endfor %}],
-                                borderWidth: 0,
-                                backgroundColor: ["#723ac3", "#864DD9", "#9762e6", "#a678eb", '#138409'],
-                                hoverBackgroundColor: ["#723ac3", "#864DD9", "#9762e6", "#a678eb"],
+                            data: [{% for value in categories.values %}{{ value }},{% endfor %}],
+                    borderWidth: 0,
+                    backgroundColor: ["#723ac3", "#864DD9", "#9762e6", "#a678eb", '#138409'],
+                    hoverBackgroundColor: ["#723ac3", "#864DD9", "#9762e6", "#a678eb"],
                             },
                         ],
                     },
                     options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'left',
-                                labels: {
-                                    font: {
-                                        size: 20
-                                    }
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'left',
+                            labels: {
+                                font: {
+                                    size: 20
                                 }
                             }
                         }
                     }
+                }
                 });
             </script>
         </div>
@@ -219,52 +219,53 @@
                 new Chart(timeline, {
                     type: 'line',
                     data: {
-                        labels: ['a','b','c','d','e','a','b','c','d','e'],
+                        labels: ['a', 'b', 'c', 'd', 'e', 'a', 'b', 'c', 'd', 'e'],
                         datasets: [{
-                                data: [{% for x in timeline %}{{x}},{% endfor %}],
-                                fill: true,
-                                borderColor: 'rgb(75, 192, 192)',
-                                tension: 0.4,
+                            data: [{% for x in timeline %}{{ x }},{% endfor %}],
+                    fill: true,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.4,
                             },
                         ],
                     },
                     options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'left',
-                                labels: {
-                                    font: {
-                                        size: 20
-                                    }
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'left',
+                            labels: {
+                                font: {
+                                    size: 20
                                 }
                             }
-                        },
-                        scales: {
-                            x: {
-                                display: false
-                            }
-                            }  
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false
+                        }
                     }
+                }
                 });
             </script>
         </div>
     </div>
 
 
-      
+
 </section>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function(event) { 
+    document.addEventListener("DOMContentLoaded", function (event) {
         var el = document.getElementById("outgoing");
         scrollpos = localStorage.getItem('scrollpos');
-        if (scrollpos) el.scrollTop=scrollpos;   
+        // if (scrollpos) el.scrollTop = scrollpos;
+        if (scrollpos) el.scrollTo({ top: scrollpos });
     });
 
-    window.onbeforeunload = function(e) {
+    window.onbeforeunload = function (e) {
         var el = document.getElementById("outgoing");
         localStorage.setItem('scrollpos', el.scrollTop);
     };

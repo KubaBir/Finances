@@ -91,21 +91,21 @@
 </body>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function(event) { 
+    document.addEventListener("DOMContentLoaded", function (event) {
         var content = document.getElementById("content");
         scrollpos_content = localStorage.getItem('scrollpos_content');
-        if (scrollpos_content) content.scrollTop=scrollpos_content;   
+        if (scrollpos_content) content.scrollTo({ top: scrollpos_content, behavior: 'smooth' });
 
-        var el = document.getElementById("outgoing");
-        scrollpos_el = localStorage.getItem('scrollpos');
-        if (scrollpos_el) el.scrollTop=scrollpos_el;   
+        // var el = document.getElementById("outgoing");
+        // scrollpos_el = localStorage.getItem('scrollpos');
+        // if (scrollpos_el) el.scrollTop = scrollpos_el;
     });
 
-    window.onbeforeunload = function(e) {
+    window.onbeforeunload = function (e) {
         var content = document.getElementById("content");
-        var el = document.getElementById("outgoing");
+        // var el = document.getElementById("outgoing");
         localStorage.setItem('scrollpos_content', content.scrollTop);
-        localStorage.setItem('scrollpos', el.scrollTop);
+        // localStorage.setItem('scrollpos', el.scrollTop);
     };
 </script>
 

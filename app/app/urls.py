@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('core.urls')),
     path('', include('authentication.urls')),
     path('', include('nordigen.urls')),
+    path('api/', include('api.urls'))
 ]
