@@ -55,6 +55,7 @@ class Transaction(models.Model):
         ('Food', 'Food'),
         ('Travel', 'Travel'),
         ('Clothing', 'Clothing'),
+        ('Transfer', 'Transfer'),
         ('Other', 'Other'),
     ]
     category = models.CharField(
@@ -94,21 +95,24 @@ class Transaction(models.Model):
             return
         category_list = {
             'Groceries': [
-                'ZABKA', 'ZAPPKA', 'CARREFOUR', 'LIDL', 'VEMAT', 'ORLEN', 'CHATA', 'KIOSK'
+                'ZABKA', 'ZAPPKA', 'CARREFOUR', 'LIDL', 'VEMAT', 'ORLEN', 'CHATA', 'KIOSK', 'BIEDRONKA'
             ],
             'Food': [
                 'MC DON', 'KFC', 'MCDONALDS', 'BAR', 'EATS', 'PYSZNE', 'GLODNY', 'PIZZA', 'SALAD', 'KIM CHI',
-                'MAKARONSKI', 'STODOLA',
+                'MAKARONSKI', 'STODOLA', 'STOLOWKA', 'PASTWISKO', 'GAST', 'RAGU'
             ],
             'Travel': [
                 'JAKDOJADE', 'BILKOM', 'LIM', 'DOTT', 'TRIP', 'BOLT', 'INTERCITY', 'URBANCARD'
             ],
             'Clothing': [
                 'ZARA', 'ASOS', 'ZALANDO'
+            ],
+            'Transfers': [
+                'PRZELEW ŚRODKÓW'
             ]}
         for category, names in category_list.items():
             for name in names:
-                if name in self.debtor_name:
+                if name in self.debtor_name.upper():
                     self.category = category
                     return
 

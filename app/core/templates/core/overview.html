@@ -64,24 +64,21 @@
                     <thead>
                         <tr>
                             <th scope="col">Debtor</th>
+                            <th scope="col">Category</th>
                             <th scope="col">Value</th>
                             <th scope="col">Date</th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id='transaction-body'>
                         {% for transaction in outgoing %}
-                        <tr {% if transaction.ignore %}class='ignore' {% endif %}>
+                        <tr id='{{transaction.id}}' {% if transaction.ignore %}class='ignore'{% endif %}>
                             <td>{{transaction.debtor_name}}</td>
+                            <td>{{transaction.category}}</td>
                             <td>{{transaction.transaction_amount}}</td>
                             <td>{{transaction.value_date}}</td>
                             <td>
-                                <form action="/ignore_transaction/{{transaction.id}}" method='POST'>
-                                    {% csrf_token %}
-                                    <input type="hidden" name="next" value="{{ request.path }}">
-                                    <button type="submit"
-                                        class="text-button fw-bold text-end text-light w-75">&#9587;</button>
-                                </form>
+                                <button class="text-button fw-bold text-end text-light w-75" onclick="change_ignore({{transaction.id}});">&#9587;</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -179,12 +176,12 @@
                 new Chart(cat, {
                     type: 'pie',
                     data: {
-                        labels: ['Groceries', 'Food', 'Travel', 'Clothing', 'Other'],
+                        labels: ['Groceries', 'Food', 'Travel', 'Clothing','Transfers', 'Other'],
                         datasets: [{
                             data: [{% for value in categories.values %}{{ value }},{% endfor %}],
                     borderWidth: 0,
-                    backgroundColor: ["#723ac3", "#864DD9", "#9762e6", "#a678eb", '#138409'],
-                    hoverBackgroundColor: ["#723ac3", "#864DD9", "#9762e6", "#a678eb"],
+                    backgroundColor: ["rgb(75,242,192)", "#118bae", "#7fd9f3", "#c5eefa", '#51fbee', '#51cbee'],
+                    //hoverBackgroundColor: ["#723ac3", "#864DD9", "#9762e6", "#a678eb"],
                             },
                         ],
                     },
@@ -258,16 +255,15 @@
 </section>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function (event) {
-        var el = document.getElementById("outgoing");
-        scrollpos = localStorage.getItem('scrollpos');
-        // if (scrollpos) el.scrollTop = scrollpos;
-        if (scrollpos) el.scrollTo({ top: scrollpos });
-    });
-
-    window.onbeforeunload = function (e) {
-        var el = document.getElementById("outgoing");
-        localStorage.setItem('scrollpos', el.scrollTop);
-    };
+    function change_ignore(id){ 
+        var CSRF_TOKEN = '{{ csrf_token }}';
+        fetch(`/api/transaction/${id}`, {
+            method: "PUT",
+            headers: {'X-CSRFToken': CSRF_TOKEN},
+        })
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+        $("#transaction-body").load(location.href + ` #transaction-body > *`);
+    }
 </script>
 {% endblock content %}
