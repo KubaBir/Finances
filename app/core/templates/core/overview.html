@@ -165,8 +165,8 @@
 </div>
 
 <section id='report' class='row g-4 mx-5 justify-content-center mb-5'>
-    <div class="col-10 col-xxl-6">
-        <div class='bg-secondary p-3'>
+    <div class="col-10 col-xxl-6 ">
+        <div class='bg-secondary p-3 h-100'>
             <div class='fs-1 fw-bold text-light'>Category Breakdown</div>
             <div style='height: 500px'>
                 <canvas id="categories"></canvas>
@@ -176,11 +176,11 @@
                 new Chart(cat, {
                     type: 'pie',
                     data: {
-                        labels: ['Groceries', 'Food', 'Travel', 'Clothing','Transfers', 'Other'],
+                        labels: ['Groceries', 'Food', 'Travel', 'Clothing','Transfers','Entertainment', 'Other'],
                         datasets: [{
                             data: [{% for value in categories.values %}{{ value }},{% endfor %}],
                     borderWidth: 0,
-                    backgroundColor: ["rgb(75,242,192)", "#118bae", "#7fd9f3", "#c5eefa", '#51fbee', '#51cbee'],
+                    backgroundColor: ["rgb(75,242,192)", "#118bae", "#7fd9f3", "#c5eefa", '#51fbee', '#51cbee', '#ddfdff'],
                     //hoverBackgroundColor: ["#723ac3", "#864DD9", "#9762e6", "#a678eb"],
                             },
                         ],
@@ -206,9 +206,9 @@
     </div>
 
     <div class="col-10 col-xxl-6">
-        <div class='bg-secondary p-3'>
+        <div class='bg-secondary p-3 h-100'>
             <div class='fs-1 fw-bold text-light'>Timeline</div>
-            <div style='height: 500px'>
+            <div style='height: 500px; box-sizing: content-box;' class="m-2">
                 <canvas id="timeline"></canvas>
             </div>
             <script>
@@ -216,11 +216,12 @@
                 new Chart(timeline, {
                     type: 'line',
                     data: {
-                        labels: ['a', 'b', 'c', 'd', 'e', 'a', 'b', 'c', 'd', 'e'],
+                        labels: ['1', '4', '7', '10', '13', '16', '19', '22', '25', '28'],
                         datasets: [{
                             data: [{% for x in timeline %}{{ x }},{% endfor %}],
                     fill: true,
                     borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(0,0,0,0.2)',
                     tension: 0.4,
                             },
                         ],
@@ -230,13 +231,7 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            display: true,
-                            position: 'left',
-                            labels: {
-                                font: {
-                                    size: 20
-                                }
-                            }
+                            display: false,
                         }
                     },
                     scales: {

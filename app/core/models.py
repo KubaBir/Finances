@@ -56,6 +56,7 @@ class Transaction(models.Model):
         ('Travel', 'Travel'),
         ('Clothing', 'Clothing'),
         ('Transfer', 'Transfer'),
+        ('Entertainment', 'Entertainment'),
         ('Other', 'Other'),
     ]
     category = models.CharField(
@@ -99,13 +100,16 @@ class Transaction(models.Model):
             ],
             'Food': [
                 'MC DON', 'KFC', 'MCDONALDS', 'BAR', 'EATS', 'PYSZNE', 'GLODNY', 'PIZZA', 'SALAD', 'KIM CHI',
-                'MAKARONSKI', 'STODOLA', 'STOLOWKA', 'PASTWISKO', 'GAST', 'RAGU'
+                'MAKARONSKI', 'STODOLA', 'STOLOWKA', 'PASTWISKO', 'GAST', 'RAGU', 'BURG', 'CLUB'
             ],
             'Travel': [
                 'JAKDOJADE', 'BILKOM', 'LIM', 'DOTT', 'TRIP', 'BOLT', 'INTERCITY', 'URBANCARD'
             ],
             'Clothing': [
-                'ZARA', 'ASOS', 'ZALANDO'
+                'ZARA', 'ASOS', 'ZALANDO', 'SPORT-SHOP'
+            ],
+            'Entertainment': [
+                'BILA', 'CINEMA', 'MULTIKINO', 'HELIOS', 'NETFLIX'
             ],
             'Transfers': [
                 'PRZELEW ŚRODKÓW'

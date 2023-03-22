@@ -139,6 +139,11 @@ def overview(request, id=None):
             category='Transfers',
             report=report
         ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
+        'entertainment': -round(Transaction.objects.filter(
+            value='SP',
+            category='Entertainment',
+            report=report
+        ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
         'other': -round(Transaction.objects.filter(
             value='SP',
             category='Other',

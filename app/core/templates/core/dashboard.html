@@ -7,7 +7,7 @@ Dashboard
 {% block path %}Dashboard{% endblock path %}
 
 {% block content %}
-<section id='quick-action' class="px-5">
+<section id='quick-action' class="px-5 my-5">
     <div class="row g-5">
         <div class="col-lg-6 col-xl-4">
             <div class="bg-secondary text-light fs-4 card h-100">
@@ -22,12 +22,12 @@ Dashboard
                         {% csrf_token %}
                         <div class="">
                             <label for="id_month">Month:</label>
-                            <input type="text" name="month" class="form-control fs-5" placeholder="#"
+                            <input type="number" max="12" min="1" name="month" class="form-control fs-5" placeholder="#"
                                 value="{{latest.date.month}}" id="id_month">
                         </div>
                         <div class="mb-3">
                             <label for="id_year">Year:</label>
-                            <input type="text" name="year" class="form-control fs-5" placeholder="#" value="2023"
+                            <input type="number" name="year" class="form-control fs-5" placeholder="#" value="2023"
                                 required="" id="id_year">
                         </div>
 
@@ -86,51 +86,28 @@ Dashboard
                 </div>
             </div>
         </div>
-        <!-- <div class="col-lg-6 col-xl-4">
-                <div class="background-secondary text-light fs-4 card h-100">
-                    <div class='card-header d-flex justify-content-between'>
-                        <div>This month:</div>
-                        <a class='fw-bold text-end w-25' style='color: #51cbee'
-                            href="/overview/{{latest.id}}">&#8250;</a>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-end">
-                            <div>Number of transactions:</div>
-                            <div style='color: #51cbee' class='fs-1'>{{latest.number_of_transactions}}</div>
-                        </div>
-                        <hr>
-                        <div>
-                            <div class="d-flex justify-content-between align-items-end">
-                                <div>Spendings:</div>
-                                <div style='color: #51cbee' class='fs-3'>{{latest.total_spendings|floatformat:1 }}</div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-end">
-                                <div>Income:</div>
-                                <div style='color: #51cbee' class='fs-3'>{{latest.total_income|floatformat:1 }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
     </div>
 </section>
 
-<section id='history' class="px-5 mx-4">
-    <div class='fs-4 fw-bold text-light'>
+<section id='history' class="px-5 mx-5">
+    <div class='fs-1 fw-bold text-light pb-3'>
         History
     </div>
-    <div class="row g-3">
+    <div class="row g-4">
         {% for report in report_list %}
-        <div class="col-md-6 col-lg-4">
-            <div class="p-3 bg-secondary" style='height: 100px'>
-                <div class='fs-4 fw-bold text-light'>
-                    {{ report.date|date:"M" }}
-                    {{report.date.year}}
+        <div class="col-md-4 col-lg-3">
+            <a href="/overview/{{report.id}}" class="bg-blue" style='height: 100px; display: block'>
+                <div class='bg-secondary h-100 py-2 px-3' style='width: 99%; box-shadow: 3px 0px 3px var(--secondary-bg-color)'>
+                    <div class='fs-3 fw-bold text-light'>
+                        {{ report.date|date:"F" }}
+                        {{report.date.year}}
+                    </div>
+                    <div class='fs-4 text-light mx-1' style='text-align: right'>
+                        -{{report.total_spendings|floatformat:0}}
+                    </div>
+                    <hr class='m-0' style='opacity: 0.8'>
                 </div>
-                <div>
-                    <a href="/overview/{{report.id}}">link</a>
-                </div>
-            </div>
+            </a>
         </div>
         {% endfor %}
     </div>
