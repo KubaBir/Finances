@@ -1,7 +1,8 @@
-from rest_framework.generics import RetrieveUpdateAPIView
 from core.views import Transaction
-from .serializers import TransactionSerializer
+from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from rest_framework.response import Response
+
+from .serializers import CustomTransactionSerializer, TransactionSerializer
 
 
 class UpdateTransactionStatusView(RetrieveUpdateAPIView):
@@ -21,3 +22,12 @@ class UpdateTransactionStatusView(RetrieveUpdateAPIView):
                 instance.ignore = True
             instance.save()
             return Response(serializer.data)
+
+
+class CreateCustomTransactionView(CreateAPIView):
+    serializer_class = CustomTransactionSerializer
+    queryset = Transaction.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user,
+                        booking_date=self.request.data['value_date'])

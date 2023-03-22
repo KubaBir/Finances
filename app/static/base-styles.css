@@ -189,3 +189,40 @@ th {
 ::-webkit-scrollbar-thumb {
     background: var(--grey-color);
 }
+
+.btn {
+    border-radius: 0px;
+}
+
+.btn-plus {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: var(--secondary-bg-color);
+    cursor: pointer;
+    /* border: 1px solid var(--blue-color); */
+
+    top: 25%;
+}
+
+.btn-plus:after {
+    content: '';
+    position: absolute;
+    transform: translate(-50%, -50%);
+    height: 4px;
+    width: 50%;
+    background: var(--grey-color);
+    top: 50%;
+    left: 50%;
+}
+
+.btn-plus:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--grey-color);
+    height: 50%;
+    width: 4px;
+}

@@ -58,7 +58,13 @@
 <div id='transaction-list' class="row g-4 bg-dark m-3 mx-5 align-items-stretch justify-content-center">
     <div class="col-10 col-xxl-6">
         <div class="p-3 text-light bg-secondary h-100">
-            <div class='fw-bold fs-1'>Outgoing</div>
+            <div class="d-flex justify-content-between">
+                <div class='fw-bold fs-1'>Outgoing</div>
+                <div style='width: 40px; margin-right: 12px'>    
+                    <a class="btn btn-outline-secondary btn-plus" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+                </div>
+
+            </div>
             <div id='outgoing' class='overflow-auto' style='height: 600px'>
                 <table class="table text-white">
                     <thead>
@@ -249,6 +255,8 @@
 
 </section>
 
+
+
 <script>
     function change_ignore(id){ 
         var CSRF_TOKEN = '{{ csrf_token }}';
@@ -262,3 +270,48 @@
     }
 </script>
 {% endblock content %}
+
+
+{% block modal_title %}Custom transaction{% endblock modal_title %}
+{% block modal_body %}
+<form id="custom_transaction_form" onsubmit="event.preventDefault(); return doForm()">
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Date</label>
+        <input type="date" class="form-control" id="value_date" name='value_date' aria-describedby="emailHelp" required>
+    </div>
+    <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Amount</label>
+    <input type="number" class="form-control" id="transaction_amount" name='transaction_amount' required>
+    </div>
+    <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Name</label>
+    <input type="text" class="form-control" id="debtor_name" name='debtor_name' required>
+    </div>
+    <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Info</label>
+    <input type="text" class="form-control" id="exampleInputPassword1">
+    </div>
+</form>
+
+<script>
+    function doForm () {
+        var CSRF_TOKEN = '{{ csrf_token }}';
+        
+        var data = new FormData(document.getElementById("custom_transaction_form"));
+
+        fetch("/api/create_custom/", { method:"post", body:data, headers: {'X-CSRFToken': CSRF_TOKEN}, })
+        .then(res => res.text())
+        .then(txt => console.log(txt))
+        .catch(err => console.error(err));
+        
+        $('#exampleModal').modal('hide');
+        $("#transaction-body").load(location.href + ` #transaction-body > *`);
+
+        // (B3) PREVENT DEFAULT FORM SUBMIT
+        return false;
+    }
+</script>
+{% endblock modal_body %}
+{% block modal_submit %}
+<button type="sumbit" class="btn btn-outline-secondary text-white" form='custom_transaction_form'>Add</button>
+{% endblock modal_submit %}
