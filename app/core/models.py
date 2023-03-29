@@ -140,5 +140,5 @@ class MonthlyReport(models.Model):
     @property
     def previous(self):
         previous = MonthlyReport.objects.filter(
-            date__lt=self.date, user=self.user).order_by('date').first()
+            date__lt=self.date, user=self.user).order_by('date').last()
         return previous

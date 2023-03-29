@@ -6,6 +6,7 @@
     --blue-color: #51cbee;
     --grey-color: #8A8D93;
     --border-color: #3d4148;
+    --hover-color: #40444b;
 }
 
 body {
@@ -225,4 +226,18 @@ th {
     background: var(--grey-color);
     height: 50%;
     width: 4px;
+}
+
+.dropdown-menu {
+    --bs-dropdown-bg: #3b3f44;
+    --bs-dropdown-border-radius: 0px;
+    --bs-dropdown-border-color: var(--border-color);
+    min-width: 7rem;
+}
+
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    color: var(--bs-dropdown-link-hover-color);
+    background-color: var(--hover-color);
 }
