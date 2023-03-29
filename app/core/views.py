@@ -181,21 +181,6 @@ def overview(request, id=None):
     return render(request, 'core/overview.html', context=context)
 
 
-def change_category(request, id=None):
-    if request.method == 'POST':
-        next = request.POST.get('next', '/')
-        transaction = Transaction.objects.get(id=id)
-        if transaction.value == 'IN':
-            transaction.value = 'RE'
-        else:
-            transaction.value = 'IN'
-        transaction.save()
-        update_report(id)
-        messages.success(request, 'Changed category.')
-        return redirect(next)
-    return redirect('core:home')
-
-
 def update_report(id):
     transaction = Transaction.objects.get(id=id)
     report = transaction.report
@@ -215,17 +200,3 @@ def update_report(id):
     ).aggregate(models.Count('transaction_amount'))['transaction_amount__count'] or 0
 
     report.save()
-
-
-def ignore_transaciton(request, id=None):
-    if request.method == 'POST':
-        next = request.POST.get('next', '/')
-        transaction = Transaction.objects.get(id=id)
-        if transaction.ignore == False:
-            transaction.ignore = True
-        else:
-            transaction.ignore = False
-        transaction.save()
-        # messages.success(request, 'Changed category.')
-        return redirect(next)
-    return redirect('core:home')
