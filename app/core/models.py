@@ -142,3 +142,16 @@ class MonthlyReport(models.Model):
         previous = MonthlyReport.objects.filter(
             date__lt=self.date, user=self.user).order_by('date').last()
         return previous
+
+    def sync(self):
+        returned = Transaction.objects.filter(
+            report=self, value='RE').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
+        spent = Transaction.objects.filter(
+            report=self, value='SP').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
+        self.total_spendings = -returned - spent
+
+        self.total_income = Transaction.objects.filter(
+            report=self, value='IN', ignore=False).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
+        self.number_of_transactions = Transaction.objects.filter(
+            report=self).aggregate(models.Count('transaction_amount'))['transaction_amount__count'] or 0
+        self.save()

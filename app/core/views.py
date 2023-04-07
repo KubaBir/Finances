@@ -110,41 +110,49 @@ def overview(request, id=None):
 
     categories = {
         'groceries': -round(Transaction.objects.filter(
+            ignore=False,
             value='SP',
             category='Groceries',
             report=report
         ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
         'food': -round(Transaction.objects.filter(
+            ignore=False,
             value='SP',
             category='Food',
             report=report
         ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
         'groceries': -round(Transaction.objects.filter(
+            ignore=False,
             value='SP',
             category='Groceries',
             report=report
         ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
         'travel': -round(Transaction.objects.filter(
+            ignore=False,
             value='SP',
             category='Travel',
             report=report
         ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
         'clothing': -round(Transaction.objects.filter(
+            ignore=False,
             value='SP',
             category='Clothing',
             report=report
         ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
         'transfers': -round(Transaction.objects.filter(
+            ignore=False,
             value='SP',
             category='Transfers',
             report=report
         ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
         'entertainment': -round(Transaction.objects.filter(
+            ignore=False,
             value='SP',
             category='Entertainment',
             report=report
         ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2),
         'other': -round(Transaction.objects.filter(
+            ignore=False,
             value='SP',
             category='Other',
             report=report

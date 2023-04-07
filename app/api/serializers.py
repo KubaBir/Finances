@@ -22,6 +22,7 @@ class TransactionSerializer(serializers.ModelSerializer):
                 instance.value = 'IN'
 
         instance.save()
+        instance.report.sync()
         return instance
 
 
