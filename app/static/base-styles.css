@@ -241,3 +241,16 @@ th {
     color: var(--bs-dropdown-link-hover-color);
     background-color: var(--hover-color);
 }
+
+#outgoing_input {
+    width: 25%;
+    margin-top: 10px;
+}
+
+#outgoing_input::placeholder {
+    color: var(--grey-color);
+}
+
+#outgoing_input:focus {
+    box-shadow: none;
+}

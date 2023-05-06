@@ -66,9 +66,18 @@
 
             </div>
             <div id='outgoing' class='overflow-auto' style='height: 600px'>
-                <table class="table text-white">
+
+                <input
+                    class='form-control'
+                    type="text" 
+                    id="outgoing_input" 
+                    onkeyup="search_transaction()" 
+                    placeholder="Search" 
+                    title="Search">
+
+                <table class="table text-white" id='outgoing_table'>
                     <thead>
-                        <tr>
+                        <tr class='header'>
                             <th scope="col">Debtor</th>
                             <th scope="col">Category</th>
                             <th scope="col">Value</th>
@@ -344,6 +353,21 @@
         $("#income-body").load(location.href + ` #income-body > *`);
         $("#returns-body").load(location.href + ` #returns-body > *`);
     }
+
+    const search_transaction = () => {
+        const trs = document.querySelectorAll('#outgoing_table tr:not(.header)')
+        const filter = document.querySelector('#outgoing_input').value
+        const regex = new RegExp(filter, 'i')
+        const isFoundInTds = td => regex.test(td.innerHTML)
+        const isFound = childrenArr => childrenArr.some(isFoundInTds)
+        const setTrStyleDisplay = ({ style, children }) => {
+          style.display = isFound([
+            ...children // <-- All columns
+          ]) ? '' : 'none' 
+        }
+        
+        trs.forEach(setTrStyleDisplay)
+    }
 </script>
 {% endblock content %}
 
@@ -370,6 +394,11 @@
 </form>
 
 <script>
+    $(document).ready( function() {
+        var date = new Date();
+        $('#value_date').val("{{ report.date|date:"Y-m-d" }}");
+    });
+
     function doForm () {
         var CSRF_TOKEN = '{{ csrf_token }}';
         

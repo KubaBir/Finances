@@ -96,11 +96,13 @@ class Transaction(models.Model):
             return
         category_list = {
             'Groceries': [
-                'ZABKA', 'ZAPPKA', 'CARREFOUR', 'LIDL', 'VEMAT', 'ORLEN', 'CHATA', 'KIOSK', 'BIEDRONKA'
+                'ZABKA', 'ZAPPKA', 'CARREFOUR', 'LIDL', 'VEMAT', 'ORLEN', 'CHATA', 'KIOSK', 'BIEDRONKA', 'KAUFLAND',
+                'ALDI'
             ],
             'Food': [
-                'MC DON', 'KFC', 'MCDONALDS', 'BAR', 'EATS', 'PYSZNE', 'GLODNY', 'PIZZA', 'SALAD', 'KIM CHI',
-                'MAKARONSKI', 'STODOLA', 'STOLOWKA', 'PASTWISKO', 'GAST', 'RAGU', 'BURG', 'CLUB'
+                'MC DON', 'KFC', 'MCDONALDS', 'BAR', 'EATS', 'PYSZNE', 'GLODNY', 'PIZZ', 'SALAD', 'KIM CHI',
+                'MAKARONSKI', 'STODOLA', 'STOLOWKA', 'PASTWISKO', 'GAST', 'RAGU', 'BURG', 'CLUB', 'PASIBUS',
+                'UPMENU'
             ],
             'Travel': [
                 'JAKDOJADE', 'BILKOM', 'LIM', 'DOTT', 'TRIP', 'BOLT', 'INTERCITY', 'URBANCARD'
