@@ -17,7 +17,7 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-end">
                     <div>Spendings</div>
-                    <div class='fs-2 orange'>{{report.total_spendings|floatformat:1|abs }}</div>
+                    <div class='fs-2 orange' id='total-spendings'>{{report.total_spendings|floatformat:1|abs }}</div>
                 </div>
                 <div class="progress my-1" style="height: 3px">
                     <div class="progress-bar bg-orange" role="progressbar" style="width: {{ spendings_bar }}%"></div>
@@ -30,7 +30,7 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-end">
                     <div>Transactions:</div>
-                    <div class='blue fs-2'>{{report.number_of_transactions }}</div>
+                    <div class='blue fs-2' id='number-of-transactions'>{{report.number_of_transactions }}</div>
                 </div>
                 <div class="progress my-1" style="height: 3px">
                     <div class="progress-bar bg-blue blue" role="progressbar" style="width: {{ transactions_bar }}%">
@@ -44,7 +44,7 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-end">
                     <div>Income:</div>
-                    <div class='fs-2 green'>{{report.total_income|floatformat:1|abs }}</div>
+                    <div class='fs-2 green' id='total-income'>{{report.total_income|floatformat:1|abs }}</div>
                 </div>
                 <div class="progress my-1" style="height: 3px">
                     <div class="progress-bar bg-green" role="progressbar" style="width: {{ income_bar }}%"></div>
@@ -337,9 +337,7 @@
         })
         .then((response) => response.json())
         .then((data) => console.log(data));
-        $("#transaction-body").load(location.href + ` #transaction-body > *`);
-        $("#income-body").load(location.href + ` #income-body > *`);
-        $("#returns-body").load(location.href + ` #returns-body > *`);
+        refresh_data();
     }   
 
     function destroy_transaction(id){
@@ -349,9 +347,20 @@
             method: "DELETE",
             headers: {'X-CSRFToken': CSRF_TOKEN},
         });
+        reload_page_delay()
+        
+    }
+
+    function refresh_data() {
         $("#transaction-body").load(location.href + ` #transaction-body > *`);
         $("#income-body").load(location.href + ` #income-body > *`);
         $("#returns-body").load(location.href + ` #returns-body > *`);
+    }
+
+    function reload_page_delay() {
+        setTimeout(() => {
+            document.location.reload();
+        }, 50);
     }
 
     const search_transaction = () => {
@@ -376,26 +385,25 @@
 {% block modal_body %}
 <form id="custom_transaction_form" onsubmit="event.preventDefault(); return doForm()">
     <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Date</label>
-        <input type="date" class="form-control" id="value_date" name='value_date' aria-describedby="emailHelp" required>
+        <label for="value_date" class="form-label">Date</label>
+        <input type="date" class="form-control" id="value_date" name='value_date' required>
     </div>
     <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Amount</label>
-    <input type="number" class="form-control" id="transaction_amount" name='transaction_amount' required>
+        <label for="transaction_amount" class="form-label">Amount</label>
+        <input type="number" class="form-control" id="transaction_amount" name='transaction_amount' required>
     </div>
     <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Name</label>
-    <input type="text" class="form-control" id="debtor_name" name='debtor_name' required>
+        <label for="debtor_name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="debtor_name" name='debtor_name' required>
     </div>
     <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Info</label>
-    <input type="text" class="form-control" id="exampleInputPassword1">
+        <label for="info" class="form-label">Info</label>
+        <input type="text" class="form-control" id="info" name='info'>
     </div>
 </form>
 
 <script>
     $(document).ready( function() {
-        var date = new Date();
         $('#value_date').val("{{ report.date|date:"Y-m-d" }}");
     });
 
@@ -409,8 +417,9 @@
         .then(txt => console.log(txt))
         .catch(err => console.error(err));
         
+        
         $('#exampleModal').modal('hide');
-        $("#transaction-body").load(location.href + ` #transaction-body > *`);
+        reload_page_delay();
 
         // (B3) PREVENT DEFAULT FORM SUBMIT
         return false;
