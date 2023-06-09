@@ -97,12 +97,12 @@ class Transaction(models.Model):
         category_list = {
             'Groceries': [
                 'ZABKA', 'ZAPPKA', 'CARREFOUR', 'LIDL', 'VEMAT', 'ORLEN', 'CHATA', 'KIOSK', 'BIEDRONKA', 'KAUFLAND',
-                'ALDI'
+                'ALDI', 'BALTONA'
             ],
             'Food': [
                 'MC DON', 'KFC', 'MCDONALDS', 'BAR', 'EATS', 'PYSZNE', 'GLODNY', 'PIZZ', 'SALAD', 'KIM CHI',
                 'MAKARONSKI', 'STODOLA', 'STOLOWKA', 'PASTWISKO', 'GAST', 'RAGU', 'BURG', 'CLUB', 'PASIBUS',
-                'UPMENU'
+                'UPMENU', 'PROPORCJA'
             ],
             'Travel': [
                 'JAKDOJADE', 'BILKOM', 'LIM', 'DOTT', 'TRIP', 'BOLT', 'INTERCITY', 'URBANCARD'
@@ -114,7 +114,7 @@ class Transaction(models.Model):
                 'BILA', 'CINEMA', 'MULTIKINO', 'HELIOS', 'NETFLIX'
             ],
             'Transfers': [
-                'PRZELEW ŚRODKÓW'
+                'PRZELEW ŚRODKÓW', 'REVOLUT'
             ]}
         for category, names in category_list.items():
             for name in names:
@@ -147,9 +147,9 @@ class MonthlyReport(models.Model):
 
     def sync(self):
         returned = Transaction.objects.filter(
-            report=self, value='RE').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
+            report=self, value='RE', ignore=False).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
         spent = Transaction.objects.filter(
-            report=self, value='SP').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
+            report=self, value='SP', ignore=False).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
         self.total_spendings = -returned - spent
 
         self.total_income = Transaction.objects.filter(

@@ -63,18 +63,17 @@
                 <div style='width: 40px; margin-right: 12px'>    
                     <a class="btn btn-outline-secondary btn-plus" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
                 </div>
-
             </div>
-            <div id='outgoing' class='overflow-auto' style='height: 600px'>
 
-                <input
-                    class='form-control'
-                    type="text" 
-                    id="outgoing_input" 
-                    onkeyup="search_transaction()" 
-                    placeholder="Search" 
-                    title="Search">
+            <input
+                class='form-control'
+                type="text" 
+                id="outgoing_input" 
+                onkeyup="search_transaction()" 
+                placeholder="Search" 
+                title="Search">
 
+            <div id='outgoing' class='overflow-auto' style='height: 550px'>
                 <table class="table text-white" id='outgoing_table'>
                     <thead>
                         <tr class='header'>
@@ -122,7 +121,6 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
     <div class="col-6">
@@ -320,8 +318,6 @@
 
 
 <script>
-    console.log({{report_spendings}})
-
     function update_transaction(id, act){
         var content;
         if (act == "change_ignore") content = { "change_ignore": true }
@@ -336,9 +332,10 @@
             body: JSON.stringify(content)
         })
         .then((response) => response.json())
-        .then((data) => console.log(data));
-        refresh_data();
-    }   
+        .then((data) => console.log(data))
+        .then(refresh_data());
+    }
+
 
     function destroy_transaction(id){
         if (confirm("Do you want to delete this transaction?") == false) return false;
@@ -346,24 +343,26 @@
         fetch(`/api/transaction/${id}`, {
             method: "DELETE",
             headers: {'X-CSRFToken': CSRF_TOKEN},
-        });
-        reload_page_delay()
+        })
+        .then(refresh_data());
+        
         
     }
 
     function refresh_data() {
-        $("#transaction-body").load(location.href + ` #transaction-body > *`);
+        $("#transaction-body").load(location.href + ` #transaction-body > * `);
         $("#income-body").load(location.href + ` #income-body > *`);
         $("#returns-body").load(location.href + ` #returns-body > *`);
+        
+        $("#overview").load(location.href + ` #overview > *`);
+
+        setTimeout(function () {
+            search_transaction();        
+        }, 250);
+        
     }
 
-    function reload_page_delay() {
-        setTimeout(() => {
-            document.location.reload();
-        }, 50);
-    }
-
-    const search_transaction = () => {
+    var search_transaction = function(){
         const trs = document.querySelectorAll('#outgoing_table tr:not(.header)')
         const filter = document.querySelector('#outgoing_input').value
         const regex = new RegExp(filter, 'i')
