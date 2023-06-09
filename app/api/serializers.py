@@ -5,10 +5,11 @@ from rest_framework import serializers
 class TransactionSerializer(serializers.ModelSerializer):
     change_ignore = serializers.BooleanField(default=False, required=False)
     change_type = serializers.BooleanField(default=False, required=False)
+    debtor_name = serializers.CharField(required=False)
 
     class Meta:
         model = Transaction
-        fields = ['id', 'change_ignore', 'change_type']
+        fields = ['id', 'change_ignore', 'change_type', 'debtor_name']
 
     def update(self, instance, validated_data):
         instance = super().update(instance, validated_data)

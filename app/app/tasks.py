@@ -82,23 +82,13 @@ def get_transactions(id, day, month, year, user_id, by_month=True):
             'info': info
         }
 
-        Transaction.objects.update_or_create(
+        Transaction.objects.get_or_create(
             id=transaction.get('transactionId'),
             defaults=values
         )
 
     # Update stats on monthly reports
     for report in MonthlyReport.objects.all():
-        # returned = Transaction.objects.filter(
-        #     report=report, value='RE').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
-        # spent = Transaction.objects.filter(
-        #     report=report, value='SP').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
-        # report.total_spendings = -returned - spent
-
-        # report.total_income = Transaction.objects.filter(
-        #     report=report, value='IN').aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0
-        # report.number_of_transactions = Transaction.objects.filter(
-        #     report=report).aggregate(models.Count('transaction_amount'))['transaction_amount__count'] or 0
         report.sync()
         report.save()
 
