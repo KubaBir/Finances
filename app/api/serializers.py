@@ -6,13 +6,15 @@ class TransactionSerializer(serializers.ModelSerializer):
     change_ignore = serializers.BooleanField(default=False, required=False)
     change_type = serializers.BooleanField(default=False, required=False)
     debtor_name = serializers.CharField(required=False)
+    info = serializers.CharField(default="", required=False)
 
     class Meta:
         model = Transaction
-        fields = ['id', 'change_ignore', 'change_type', 'debtor_name']
+        fields = ['id', 'change_ignore', 'change_type', 'debtor_name', 'info']
 
     def update(self, instance, validated_data):
         instance = super().update(instance, validated_data)
+        print(validated_data)
 
         if validated_data['change_ignore']:
             instance.ignore = not instance.ignore

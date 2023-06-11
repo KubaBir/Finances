@@ -100,7 +100,7 @@ class Transaction(models.Model):
                 'ALDI', 'BALTONA'
             ],
             'Food': [
-                'MC DON', 'KFC', 'MCDONALDS', 'BAR', 'EATS', 'PYSZNE', 'GLODNY', 'PIZZ', 'SALAD', 'KIM CHI',
+                'MC DON', 'KFC', 'MCDONALDS', 'BARABOO', 'EATS', 'PYSZNE', 'GLODNY', 'PIZZ', 'SALAD', 'KIM CHI',
                 'MAKARONSKI', 'STODOLA', 'STOLOWKA', 'PASTWISKO', 'GAST', 'RAGU', 'BURG', 'CLUB', 'PASIBUS',
                 'UPMENU', 'PROPORCJA'
             ],

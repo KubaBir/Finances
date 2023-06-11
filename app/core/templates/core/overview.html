@@ -161,6 +161,11 @@
                                             </button>
                                         </li>
                                         <li>
+                                            <button class="dropdown-item text-white" onclick="show_modal({{transaction.id}})">
+                                                Change name
+                                            </button>
+                                        </li>   
+                                        <li>
                                             <button class="dropdown-item text-white" onclick="destroy_transaction({{transaction.id}});">
                                                 Delete
                                             </button>
@@ -212,10 +217,15 @@
                                             </button>
                                         </li>
                                         <li>
+                                            <button class="dropdown-item text-white" onclick="show_modal({{transaction.id}})">
+                                                Change name
+                                            </button>
+                                        </li>   
+                                        <li>
                                             <button class="dropdown-item text-white" onclick="destroy_transaction({{transaction.id}});">
                                                 Delete
                                             </button>
-                                        </li>                        
+                                        </li>                  
                                     </ul>
                                   </div>
                             </td>
@@ -362,6 +372,10 @@
                     <label for="name" class="form-label">New name</label>
                     <input type="text" class="form-control" id="debtor_name" name='debtor_name'>
                 </div>
+                <div class="mb-3">
+                    <label for="info" class="form-label">Info</label>
+                    <input type="text" class="form-control" id="info" name='info'>
+                </div>
             </form>
             
         
@@ -446,7 +460,7 @@
         .then(txt => console.log(txt))
         .catch(err => console.error(err));
         
-        $('#exampleModal').modal('hide');
+        $('#newTransactionModal').modal('hide');
         refresh_data();
 
         return false;
