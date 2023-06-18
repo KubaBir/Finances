@@ -29,7 +29,7 @@ def login_user(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.info(request, "Logged in successfully.")
+                messages.info(request, "Success!")
                 return redirect('core:home')
         messages.error(request, 'Invalid credentials')
     form = LoginUserForm()

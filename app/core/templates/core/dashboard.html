@@ -7,7 +7,7 @@ Dashboard
 {% block path %}Dashboard{% endblock path %}
 
 {% block content %}
-<section id='quick-action' class="px-5 my-5">
+<section id='quick-action' class="px-5">
     <div class="row g-5">
         <div class="col-lg-6 col-xl-4">
             <div class="bg-secondary text-light fs-4 card h-100">
@@ -89,15 +89,15 @@ Dashboard
     </div>
 </section>
 
-<section id='history' class="px-5 mx-5">
-    <div class='fs-1 fw-bold text-light pb-3'>
+<section id='history' class="mt-2 mx-1">
+    <div class='fs-1 fw-bold text-light pb-3 ps-3'>
         History
     </div>
-    <div class="row g-4">
+    <div class="row g-2">
         {% for report in report_list %}
-        <div class="col-md-4 col-lg-3">
+        <div class="col-6 col-md-4 col-lg-3">
             <a href="/overview/{{report.id}}" class="bg-blue" style='height: 100px; display: block'>
-                <div class='bg-secondary h-100 py-2 px-3' style='width: 99%; box-shadow: 3px 0px 3px var(--secondary-bg-color)'>
+                <div class='bg-secondary h-100 py-2 px-2'>
                     <div class='fs-3 fw-bold text-light'>
                         {{ report.date|date:"F" }}
                         {{report.date.year}}

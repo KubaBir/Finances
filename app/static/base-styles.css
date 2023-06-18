@@ -30,16 +30,15 @@ body {
 .content {
     width: 100%;
     position: absolute;
-    top: 125px;
+    top: 60px;
     bottom: 0;
     overflow-y: scroll;
     z-index: 0;
+    overflow-x: hidden;
 }
 
 .banner {
     width: 100%;
-    position: fixed;
-    z-index: 10;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -182,7 +181,7 @@ th {
 }
 
 #outgoing::-webkit-scrollbar-track {
-    background-color: var(--secondary-bg-color);
+    /* background-color: var(--secondary-bg-color); */
     margin-top: 40px;
 }
 
@@ -243,7 +242,7 @@ th {
 }
 
 #outgoing_input {
-    width: 25%;
+    width: 12rem;
     margin-top: 10px;
 }
 
