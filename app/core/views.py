@@ -167,7 +167,8 @@ def overview(request, id=None):
             user=request.user,
             value='SP',
             report=report,
-            value_date=date
+            value_date=date,
+            ignore=False
         ).aggregate(models.Sum('transaction_amount'))['transaction_amount__sum'] or 0, 2))
     timeline = []
     for i in range(0, len(daily_spendings), 3):

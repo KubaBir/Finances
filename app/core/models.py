@@ -102,7 +102,7 @@ class Transaction(models.Model):
             'Food': [
                 'MC DON', 'KFC', 'MCDONALDS', 'BARABOO', 'EATS', 'PYSZNE', 'GLODNY', 'PIZZ', 'SALAD', 'KIM CHI',
                 'MAKARONSKI', 'STODOLA', 'STOLOWKA', 'PASTWISKO', 'GAST', 'RAGU', 'BURG', 'CLUB', 'PASIBUS',
-                'UPMENU', 'PROPORCJA'
+                'UPMENU', 'PROPORCJA', 'KONKRET MARTA'
             ],
             'Travel': [
                 'JAKDOJADE', 'BILKOM', 'LIM', 'DOTT', 'TRIP', 'BOLT', 'INTERCITY', 'URBANCARD'
@@ -111,7 +111,7 @@ class Transaction(models.Model):
                 'ZARA', 'ASOS', 'ZALANDO', 'SPORT-SHOP'
             ],
             'Entertainment': [
-                'BILA', 'CINEMA', 'MULTIKINO', 'HELIOS', 'NETFLIX'
+                'BILA', 'CINEMA', 'MULTIKINO', 'HELIOS', 'NETFLIX', 'GRAVITACJA'
             ],
             'Transfers': [
                 'PRZELEW ŚRODKÓW', 'REVOLUT'

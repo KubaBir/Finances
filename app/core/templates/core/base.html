@@ -47,7 +47,7 @@
                     {% endblock banner %}
                 </div>
                 {% if messages %}
-                <div class="position-absolute w-75 mx-auto" style="left: 0; right: 0;">
+                <div class="position-absolute w-75 mx-auto" style="left: 0; right: 0; z-index: 100;">
                     {% for message in messages %}
                     {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
                     <div style='margin-bottom: 0'
