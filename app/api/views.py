@@ -39,7 +39,6 @@ class CreateCustomTransactionView(CreateAPIView):
 class ReportView(RetrieveAPIView):
     serializer_class = ReportSerializer
     queryset = MonthlyReport.objects.all()
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     lookup_field = 'date'
@@ -55,7 +54,6 @@ class ReportView(RetrieveAPIView):
 
 
 class FetchTransactionsView(GenericAPIView):
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_serializer(self, *args, **kwargs):
@@ -80,8 +78,9 @@ class FetchTransactionsView(GenericAPIView):
                 day = today.day
             else:
                 day = calendar.monthrange(year, month)[1]
-            get_transactions(
-                request.user.id, day, month, year, 0, by_month)
+
+            if not get_transactions(request.user.id, day, month, year, 0, by_month):
+                return Response({'status': 'failed'}, status=status.HTTP_400_BAD_REQUEST)
 
             return Response({'status': 'successs'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

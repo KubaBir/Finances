@@ -37,27 +37,24 @@ Dashboard
         </div>
         <div class="col-11 col-xl-4">
             <div class="bg-secondary text-light fs-4 card h-100">
-                <form action={% url 'nordigen:fetch' %} method='POST'>
-                    <div class='card-header d-flex justify-content-between'>
-                        <div>Fetch data by month:</div>
-                        <button style='color: #51cbee' type="submit"
-                            class="text-button fw-bold text-end w-25">&#8250;</button>
+                <div class='card-header d-flex justify-content-between'>
+                    <div>Fetch data by month:</div>
+                    <button id="btnFetch" style='color: #51cbee' type="submit"
+                        class="text-button fw-bold text-end w-25">&#8250;</button>
+                </div>
+                <div class="card-body">
+                    <div class="">
+                        <label for="id_month">Month:</label>
+                        <input type="number" max="12" min="1" name="month" class="form-control fs-5" placeholder="#"
+                            value="{{latest.date.month}}" id="id_month">
                     </div>
-                    <div class="card-body">
-                        {% csrf_token %}
-                        <div class="">
-                            <label for="id_month">Month:</label>
-                            <input type="number" max="12" min="1" name="month" class="form-control fs-5" placeholder="#"
-                                value="{{latest.date.month}}" id="id_month">
-                        </div>
-                        <div class="mb-3">
-                            <label for="id_year">Year:</label>
-                            <input type="number" name="year" class="form-control fs-5" placeholder="#" value="2023"
-                                required="" id="id_year">
-                        </div>
+                    <div class="mb-3">
+                        <label for="id_year">Year:</label>
+                        <input type="number" name="year" class="form-control fs-5" placeholder="#" value="2023"
+                            required="" id="id_year">
+                    </div>
 
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
 
@@ -93,11 +90,12 @@ Dashboard
 
 
 <script>
-    function fetchTransactions() {
-        const month = document.getElementById('id_month')
-        const year = document.getElementById('id_year')
+    const btnFetch = document.getElementById('btnFetch');
+    const month = document.getElementById('id_month');
+    const year = document.getElementById('id_year');
+    const CSRF_TOKEN = '{{ csrf_token }}';
 
-        const csrf_token = '{% csrf_token %}'
+    btnFetch.addEventListener('click', function () {
 
         content = {
             'month': month.value,
@@ -114,10 +112,13 @@ Dashboard
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                if (data.status == 'success') {
+                    location.reload();
+                }
+                // console.log(data);
             })
-            .catch(errors => console.log(errors));
-    }
+            .catch(error => console.log(error));
+    })
 </script>
 
 
