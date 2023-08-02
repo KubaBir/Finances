@@ -44,7 +44,6 @@ Dashboard
                             class="text-button fw-bold text-end w-25">&#8250;</button>
                     </div>
                     <div class="card-body">
-
                         {% csrf_token %}
                         <div class="">
                             <label for="id_month">Month:</label>
@@ -61,7 +60,7 @@ Dashboard
                 </form>
             </div>
         </div>
-        
+
     </div>
 </section>
 
@@ -76,7 +75,7 @@ Dashboard
                 <div class='bg-secondary h-100 py-2 px-2'>
                     <div class='fs-3 fw-bold text-light'>
                         {{ report.date|date:"F" }}
-                        
+
                     </div>
                     <div class='fs-5 fw-bold text-light'>
                         {{report.date.year}}
@@ -92,6 +91,34 @@ Dashboard
     </div>
 </section>
 
+
+<script>
+    function fetchTransactions() {
+        const month = document.getElementById('id_month')
+        const year = document.getElementById('id_year')
+
+        const csrf_token = '{% csrf_token %}'
+
+        content = {
+            'month': month.value,
+            'year': year.value
+        }
+
+        fetch('http://127.0.0.1:8000/api/fetch/', {
+            method: "POST",
+            headers: {
+                'X-CSRFToken': CSRF_TOKEN,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(content)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(errors => console.log(errors));
+    }
+</script>
 
 
 {% endblock content %}

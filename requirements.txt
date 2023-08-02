@@ -4,3 +4,4 @@ psycopg2>=2.9.3,<2.10
 celery >= 5.2,<5.3
 redis
 requests
+django-cors-headers

@@ -3,7 +3,13 @@ from django.contrib import admin
 from .models import MonthlyReport, Transaction, User
 
 admin.site.register(User)
-admin.site.register(MonthlyReport)
+
+
+class ReportAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
+
+
+admin.site.register(MonthlyReport, ReportAdmin)
 
 
 class TransactionAdmin(admin.ModelAdmin):
